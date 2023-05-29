@@ -40,7 +40,7 @@ export default function StoreMainPage(){
                const data = res.data.data;
             }),
             {
-              success: 'Login Successful',
+              success: 'Search Successful',
               loading: 'Loading...',
               error: (e) =>{
                 return <p>
