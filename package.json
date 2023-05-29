@@ -22,6 +22,7 @@
     "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
+    "dotenv": "^16.0.3",
     "embla-carousel-react": "^8.0.0-rc03",
     "eslint": "8.37.0",
     "eslint-config-next": "13.3.0",
@@ -46,6 +47,7 @@
     "zustand": "^4.3.7"
   },
   "devDependencies": {
+    "prettier": "2.8.8",
     "tailwind-scrollbar": "^3.0.4"
   }
 }

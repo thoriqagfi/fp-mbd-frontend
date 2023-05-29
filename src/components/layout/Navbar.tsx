@@ -16,7 +16,7 @@ export const links = [
 ]
 
 export default function Navbar() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, isAuthenticated } = useAuthStore();
   const { theme, setTheme, systemTheme } = useTheme();
 
   const [ mounted, setMounted ] = React.useState<boolean>(false);
@@ -78,9 +78,35 @@ export default function Navbar() {
           </nav>
           <div className='flex my-auto'>
             {renderThemeChanger()}
-            <Link href='/login' className='pl-6'>
-              Login
-            </Link>
+            {
+              isAuthenticated ? (
+                <div className={clsxm(
+                  'tooltip relative inline-block',
+                )}>
+                  <Image
+                    src={user!.pp}
+                    alt='Profile Picture'
+                    width={40}
+                    height={40}
+                  />
+                  <div className={clsxm(
+                    'tooltip-item flex flex-col p-4 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 invisible right-0',
+                  )}>
+                    <Link href={'/'}>{user!.name}</Link>
+                    <ul className='space-y-2 list-disc'>
+                      <li>
+                        <Link href={'/user'}>Profile</Link>
+                        <Link href={'/logout'}>Logout</Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <Link href='/login' className='pl-6'>
+                  Login
+                </Link>
+              )
+            }
           </div>
         </div>
       </header>
