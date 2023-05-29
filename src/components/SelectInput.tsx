@@ -16,8 +16,8 @@ export default function SelectInput({
 }: SelectInputProps) {
   const { register, formState: {errors} } = useFormContext()
   return (
-    <div className='w-4/5 md:w-7/12'>
-      <label htmlFor={id} className="text-gray-900 dark:text-white">
+    <div className=''>
+      <label htmlFor={id} className="text-gray-900 dark:text-white py-1">
         {titleLabel}
       </label>
       <select

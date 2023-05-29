@@ -10,6 +10,7 @@ import { apiMock } from '@/lib/apiMock';
 import { setToken } from '@/lib/token';
 import Input from '@/components/Input';
 import SelectInput from '@/components/SelectInput';
+import Button from '@/components/Button';
 
 export type RegisterData = {
   name: string;
@@ -19,13 +20,11 @@ export type RegisterData = {
 }
 
 export default function Register() {
-  
-  
   // const { register } = useAuthStore();
 
   const { mutate, isSuccess, isError, isLoading } = useMutation(
     async (data: RegisterData) => {
-      const res = await apiMock.post(`https://fp-mbd-backend-production-77db.up.railway.app/user`, data)
+      const res = await apiMock.post(`/user`, data)
       return res;
     }
   )
@@ -74,10 +73,10 @@ export default function Register() {
     >
       <div className='h-[calc(100vh-90px)] flex items-center justify-center'>
         <div className='h-full flex justify-center items-center'>
-          <div className='border-2 w-80 h-100 rounded-xl justify-between items-center mx-auto my-auto border-black dark:border-white py-5'>
-            <h1 className='text-center font-bold'>REGISTER</h1>
+          <div className='border-2 rounded-xl border-black dark:border-white px-32 py-10 flex flex-col justify-center items-center'>
+            <h1 className='text-center font-bold '>REGISTER</h1>
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center items-center'>
+              <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center gap-y-1'>
               <Input
                   id='name'
                   titleLabel='Name'
@@ -122,17 +121,17 @@ export default function Register() {
                   registerType={{
                     required: "This is required!",
                   }}
-                  options={['developer', 'user']}
+                  options={['Developer', 'User']}
                 />
-                <button
+                <Button
                   type="submit"
-                  className="rounded-md cursor-pointer mt-5 bg-slate-700 hover:bg-slate-600 p-2 text-white w-4/5 md:w-7/12 duration-200"
+                  className="rounded-md cursor-pointer mt-5 bg-slate-700 hover:bg-slate-600 p-2 text-white duration-200"
                 >
                   Create Account
-                </button>
+                </Button>
 
                 <span className="flex gap-2 mt-2">
-                  <h3 className="text-gray-600">Already have an account ?</h3>
+                  <h3 className="text-gray-600">Already have an account?</h3>
                   <Link className="hover:underline" href="/login">
                     Login
                   </Link>

@@ -3,6 +3,6 @@ export type User = {
   name: string
   email: string
   password: string
-  PP: string
+  pp: string
   token: string
 }

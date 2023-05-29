@@ -1,5 +1,6 @@
 import Head from "next/head";
 import * as React from 'react';
+import Image from 'next/image';
 
 import { FormProvider, FormProviderProps, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
@@ -31,30 +32,30 @@ export default function StoreMainPage(){
     const featured =  async () => {await apiMock.get(`https://fp-mbd-backend-production-77db.up.railway.app/user/storeMainPage/featured`)}
 
 
-    const { mutate, isSuccess, isError, isLoading } = useMutation(
-        async ({keyword}: SearchData) => {
-            await toast.promise(
-              apiMock.post(`https://fp-mbd-backend-production-77db.up.railway.app/user`, {keyword})
-             .then( async (res) => {
-               console.log(res)
-               const data = res.data.data;
-            }),
-            {
-              success: 'Login Successful',
-              loading: 'Loading...',
-              error: (e) =>{
-                return <p>
-                  {e.response ? e.response.data.message : 'Something went wrong'}
-                </p>;
-              }
-            }
-            )}
-          )
+    // const { mutate, isSuccess, isError, isLoading } = useMutation(
+    //     async ({keyword}: SearchData) => {
+    //         await toast.promise(
+    //           apiMock.post(`https://fp-mbd-backend-production-77db.up.railway.app/user`, {keyword})
+    //          .then( async (res) => {
+    //            console.log(res)
+    //            const data = res.data.data;
+    //         }),
+    //         {
+    //           success: 'Login Successful',
+    //           loading: 'Loading...',
+    //           error: (e) =>{
+    //             return <p>
+    //               {e.response ? e.response.data.message : 'Something went wrong'}
+    //             </p>;
+    //           }
+    //         }
+    //         )}
+    //       )
 
-    const onSubmit = ({keyword}: SearchData) => {
-        //console.log("data", {email, password}); //dummy test
-        mutate({keyword});
-    }
+    // const onSubmit = ({keyword}: SearchData) => {
+    //     //console.log("data", {email, password}); //dummy test
+    //     mutate({keyword});
+    // }
 
     const methods = useForm<SearchData>({
         mode: "onChange",
@@ -91,7 +92,7 @@ export default function StoreMainPage(){
                 <section>
                 <div className="px-[15%] pt-5">
                     <FormProvider {...methods}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -100,7 +101,7 @@ export default function StoreMainPage(){
                                 <input type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Games, Tags..." required/>
                                 <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Search size={20} color="white"/></button>
                             </div>
-                        </form>
+                        {/* </form> */}
                     </FormProvider>
                 </div>
                 <div className="px-[15%] py-5">
@@ -117,7 +118,7 @@ export default function StoreMainPage(){
                         <Carousel.Slide>
                         <a href="#" className="flex flex-col md:flex-row items-center shadow h-full w-full mx-auto">
                             <div className="flex items-center basis-2/3 bg-black h-full w-full">
-                                <img src="https://drive.google.com/uc?export=view&id=1dPeSQxGqPqFgWiQbmTvhPC6Q2X4Tk8k7" alt="image2" className="w-full"/>
+                                <Image height={500} width={500} src="https://drive.google.com/uc?export=view&id=1dPeSQxGqPqFgWiQbmTvhPC6Q2X4Tk8k7" alt="image2" className="w-full"/>
                             </div>
                             <div className="flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700">
                                 <div className="m-auto">
@@ -131,7 +132,7 @@ export default function StoreMainPage(){
                         <Carousel.Slide>
                         <a href="#" className="flex flex-col md:flex-row items-center shadow h-full w-full mx-auto">
                             <div className="flex items-center basis-2/3 bg-black h-full w-full">
-                                <img src="https://drive.google.com/uc?export=view&id=1UOX9hzioGUnmgNYEeA2lBtEmson4YIwU" alt="image2" className="w-full"/>
+                                <Image height={500} width={500} src="https://drive.google.com/uc?export=view&id=1UOX9hzioGUnmgNYEeA2lBtEmson4YIwU" alt="image2" className="w-full"/>
                             </div>
                             <div className="flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700">
                                 <div className="m-auto">
@@ -145,7 +146,7 @@ export default function StoreMainPage(){
                         <Carousel.Slide>
                         <a href="#" className="flex flex-col md:flex-row items-center shadow h-full w-full mx-auto">
                             <div className="flex items-center basis-2/3 bg-black h-full w-full">
-                                <img src="https://drive.google.com/uc?export=view&id=1X0JUnaBG3ITbadqkq7_WnK2Z-LFexd-z" alt="image2" className="w-full"/>
+                                <Image height={500} width={500}  src="https://drive.google.com/uc?export=view&id=1X0JUnaBG3ITbadqkq7_WnK2Z-LFexd-z" alt="image2" className="w-full"/>
                             </div>
                             <div className="flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700">
                                 <div className="m-auto">
@@ -159,7 +160,7 @@ export default function StoreMainPage(){
                         <Carousel.Slide>
                         <a href="#" className="flex flex-col md:flex-row items-center shadow h-full w-full mx-auto">
                             <div className="flex items-center basis-2/3 bg-black h-full w-full">
-                                <img src="https://drive.google.com/uc?export=view&id=10hMKfsOmYHRoq3R8AQmcLyqCBc-RR_3f" alt="image2" className="w-full"/>
+                                <Image height={500} width={500} src="https://drive.google.com/uc?export=view&id=10hMKfsOmYHRoq3R8AQmcLyqCBc-RR_3f" alt="image2" className="w-full"/>
                             </div>
                             <div className="flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700">
                                 <div className="m-auto">
@@ -194,55 +195,55 @@ export default function StoreMainPage(){
                         >
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=16M3Q_B3x8o_96EoP8rZe5BHZ4tSLZrGL" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=16M3Q_B3x8o_96EoP8rZe5BHZ4tSLZrGL" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">ACTION</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=10hMKfsOmYHRoq3R8AQmcLyqCBc-RR_3f" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=10hMKfsOmYHRoq3R8AQmcLyqCBc-RR_3f" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">MULTIPLAYER</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1X0JUnaBG3ITbadqkq7_WnK2Z-LFexd-z" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1X0JUnaBG3ITbadqkq7_WnK2Z-LFexd-z" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">COMPETITIVE</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1nnwXN8pOWqBm_J_bcAQ32LjAcYOU6cEq" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1nnwXN8pOWqBm_J_bcAQ32LjAcYOU6cEq" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">SURVIVAL</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1dPeSQxGqPqFgWiQbmTvhPC6Q2X4Tk8k7" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1dPeSQxGqPqFgWiQbmTvhPC6Q2X4Tk8k7" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">BATTLE ROYALE</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1SBgO7i33z9HD5AkiRXBo0czM_XXqbrFn" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1SBgO7i33z9HD5AkiRXBo0czM_XXqbrFn" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">SHOOTER</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1mZXqNybn-jaA-zkYVyzJUdiHuczohj9j" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1mZXqNybn-jaA-zkYVyzJUdiHuczohj9j" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">HORROR</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1xHBROdo7S_wwt-OP46R5bBILX9gVFeP6" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1xHBROdo7S_wwt-OP46R5bBILX9gVFeP6" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">LOCAL & PARTY</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1V3yewaAzFIVQRYgdnO657isOYKhRqL0F" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1V3yewaAzFIVQRYgdnO657isOYKhRqL0F" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">OPEN WORLD</p>
                             </a>
                         </Carousel.Slide>
@@ -251,61 +252,61 @@ export default function StoreMainPage(){
 
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1L88k-JqDzGOyRz2qJCzLWst5ibJIoY56" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1L88k-JqDzGOyRz2qJCzLWst5ibJIoY56" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">STRATEGY</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1yPnZJO5Dh_2MT8RTkgt0VfwDsLUDreNx" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1yPnZJO5Dh_2MT8RTkgt0VfwDsLUDreNx" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">MOBA</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1A-ywZYxn6F9d836nviCDaaSWswsRk6Oc" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1A-ywZYxn6F9d836nviCDaaSWswsRk6Oc" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">PVP</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=11vLXz2HjMhnkXiCD98bibNyk1AXqj24k" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=11vLXz2HjMhnkXiCD98bibNyk1AXqj24k" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">SIMULATION</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1n71wzDFXyuSSzzjPvExKMIOP2NEGPVAa" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1n71wzDFXyuSSzzjPvExKMIOP2NEGPVAa" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">FANTASY</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1kvYE_u_IPoHbH-7kiqxnbalbRbDMPIsi" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1kvYE_u_IPoHbH-7kiqxnbalbRbDMPIsi" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">RPG</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1HdIbMVVG88g7XJfCag9NE0Ih5AOdLQPz" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1HdIbMVVG88g7XJfCag9NE0Ih5AOdLQPz" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">TACTICAL</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1UOX9hzioGUnmgNYEeA2lBtEmson4YIwU" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1UOX9hzioGUnmgNYEeA2lBtEmson4YIwU" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">TEAM-BASED</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">MMORPG</p>
                             </a>
                         </Carousel.Slide>
                         <Carousel.Slide>
                             <a href="#" className="w-full h-full bg-gradient-to-t from-gray-900 from-20% to-transparent grid place-items-end relative overflow-hidden">
-                                <img src="https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
+                                <Image height={500} width={500} alt ='' src="https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N" className="h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-overlay"/>
                                 <p className="text-white font-semibold mx-auto mb-5">ADVENTURE</p>
                             </a>
                         </Carousel.Slide>
@@ -316,7 +317,7 @@ export default function StoreMainPage(){
                 </div>
                 <div className="w-2/3 mx-auto">
                     <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3">
-                        <img className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N" alt=""/>
+                        <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N" alt=""/>
                         <div className="flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">STRAY</h5>
                             <p className="font-normal text-gray-700 dark:text-gray-400">Adventure, Strategy, Open World</p>
@@ -326,7 +327,7 @@ export default function StoreMainPage(){
                         </div>
                     </a>
                     <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3">
-                        <img className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q" alt=""/>
+                        <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q" alt=""/>
                         <div className="flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Monster Hunter</h5>
                             <p className="font-normal text-gray-700 dark:text-gray-400">Action, Multiplayer, Open World</p>

@@ -20,8 +20,8 @@ export default function Input({
   } = useFormContext();
   const [show, setShow] = React.useState(false);
   return (
-    <div className="w-4/5 md:w-7/12 h-20">
-      <label htmlFor={inputType}>{titleLabel}</label>
+    <div className="py-2 h-[88px]">
+      <label htmlFor={inputType} className="">{titleLabel}</label>
       <span
         className={`flex bg-white rounded-md border-gray-300 hover:border-gray-400 border-[1px] px-2 py-2`}
       >
@@ -46,7 +46,7 @@ export default function Input({
           </div>
         )}
       </span>
-      <p className="text-red-500 text-[11px]">{errorMessage}</p>
+      <p className="text-red-500 text-[11px] py-0.5">{errorMessage}</p>
     </div>
   );
 }
