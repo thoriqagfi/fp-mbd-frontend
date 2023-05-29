@@ -32,27 +32,6 @@ export default function StoreMainPage(){
     const featured =  async () => {await apiMock.get(`https://fp-mbd-backend-production-77db.up.railway.app/user/storeMainPage/featured`)}
 
 
-<<<<<<< HEAD
-    const { mutate, isSuccess, isError, isLoading } = useMutation(
-        async ({keyword}: SearchData) => {
-            await toast.promise(
-              apiMock.post(`https://fp-mbd-backend-production-77db.up.railway.app/user`, {keyword})
-             .then( async (res) => {
-               console.log(res)
-               const data = res.data.data;
-            }),
-            {
-              success: 'Search Successful',
-              loading: 'Loading...',
-              error: (e) =>{
-                return <p>
-                  {e.response ? e.response.data.message : 'Something went wrong'}
-                </p>;
-              }
-            }
-            )}
-          )
-=======
     // const { mutate, isSuccess, isError, isLoading } = useMutation(
     //     async ({keyword}: SearchData) => {
     //         await toast.promise(
@@ -72,7 +51,6 @@ export default function StoreMainPage(){
     //         }
     //         )}
     //       )
->>>>>>> 185f7fcecc7ad6474bb6bb5305afe3e99b8f4349
 
     // const onSubmit = ({keyword}: SearchData) => {
     //     //console.log("data", {email, password}); //dummy test

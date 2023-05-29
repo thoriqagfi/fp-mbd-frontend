@@ -116,9 +116,13 @@ export default function GamePage(){
                                     <p className="mt-1 mb-0 text-light font-light text-lg" >Developer: [Developer_D_ID]</p>
                                     <p className="mt-1 mb-0 text-light font-light text-lg" >Release Date: [G_TGLRILIS]</p>
                                     <p className="mt-1 mb-0 text-light font-light text-lg" >Age Rating: [G_AGERATING]</p>
-                                    <p className="mt-1 mb-0 text-light font-light text-lg" >Tags:</p>
-                                    <div className="badge bg-primary text-wrap w-16">
-                                        [G_TAGS].
+                                    <p className="mt-3 mb-0 text-light font-light text-lg" ><b>Tags:</b></p>
+                                    <div className="flex flex-wrap">
+                                        <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[G_TAGS]</span>
+                                        <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[G_TAGS]</span>
+                                        <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[G_TAGS]</span>
+                                        <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[G_TAGS]</span>
+                                        <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[G_TAGS]</span>
                                     </div>
                                 </div>
                             </div>
@@ -141,13 +145,13 @@ export default function GamePage(){
                                         <div className="flex flex-wrap">
                                             <div className="w-full">
                                             <ul
-                                                className="w-full lg:w-1/3 flex mb-0 list-none pb-4 flex-row"
+                                                className="w-full lg:w-1/3 flex mb-0 list-none flex-row"
                                                 role="tablist"
                                             >
                                                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
                                                 <a
                                                     className={
-                                                    "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                                                    "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded-t-sm block leading-normal " +
                                                     (openTab === 1
                                                         ? "text-white bg-slate-700"
                                                         : "text-white bg-blueGray-600")
@@ -166,7 +170,7 @@ export default function GamePage(){
                                                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
                                                 <a
                                                     className={
-                                                    "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
+                                                    "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded-t-sm block leading-normal" +
                                                     (openTab === 2
                                                         ? "text-white bg-slate-700"
                                                         : "text-white bg-blueGray-600")
@@ -183,7 +187,7 @@ export default function GamePage(){
                                                 </a>
                                                 </li>
                                             </ul>
-                                            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-700">
+                                            <div className="relative flex flex-col min-w-0 break-words w-full mb-1 shadow-lg rounded-b-sm bg-slate-700">
                                                 <div className="px-4 py-5 flex-auto">
                                                 <div className="tab-content tab-space">
                                                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
@@ -216,20 +220,29 @@ export default function GamePage(){
                                 </div>
                             </div>
 
-                            <div className="col-md-4 col-sm-12 col-12 my-md-0 my-sm-3">
-                                <div className="col-12 d-flex flex-column cust-container-top p-3">
-                                    <h5 className="text-light">Language Compatibility</h5>
-                                    <p className="mx-1 mt-3 text-light">Interface:</p>
-                                    <div className="badge bg-primary text-wrap w-16">
-                                        [BI_NAME].
-                                    </div>
-                                    <p className="mx-1 mt-3 text-light">Audio:</p>
-                                    <div className="badge bg-primary text-wrap w-16">
-                                        [BA_NAME].
-                                    </div>
-                                    <p className="mx-1 mt-3 text-light">Subtitle:</p>
-                                    <div className="badge bg-primary text-wrap w-16">
-                                        [BS_NAME].
+                            <div className="w-full md:w-1/3 pl-0 md:pl-4 md:my-0">
+                                <div className="w-full bg-slate-900">
+                                    <div className="w-full flex flex-col p-6">
+                                        <h5 className="text-light text-lg">Language Compatibility</h5>
+                                        <p className="mx-1 mt-3 text-light ">Interface:</p>
+                                            <div className="flex flex-wrap">
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BI_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BI_NAME]</span>
+                                            </div>
+                                        <p className="mx-1 mt-3 text-light">Audio:</p>
+                                            <div className="flex flex-wrap">
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BA_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BA_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BA_NAME]</span>
+                                            </div>
+                                        <p className="mx-1 mt-3 text-light">Subtitle:</p>
+                                            <div className="flex flex-wrap">
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BS_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BS_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BS_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BS_NAME]</span>
+                                                <span className="w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">[BS_NAME]</span>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
