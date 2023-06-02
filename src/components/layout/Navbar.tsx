@@ -12,7 +12,7 @@ import { clsxm } from '@/lib/clsxm';
 export const links = [
   { href: '/', label: 'Store' },
   { href: '/library', label: 'Library' },
-  { href: '/user', label: 'User' },
+  { href: '/User', label: 'User' },
 ]
 
 export default function Navbar() {
@@ -95,7 +95,7 @@ export default function Navbar() {
                     <Link href={'/'}>{user!.name}</Link>
                     <ul className='space-y-2 list-disc'>
                       <li>
-                        <Link href={'/user'}>Profile</Link>
+                        <Link href={'/User'}>User</Link>
                         <Link href={'/logout'}>Logout</Link>
                       </li>
                     </ul>
