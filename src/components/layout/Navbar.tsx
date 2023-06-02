@@ -2,54 +2,55 @@ import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useAuthStore from '@/store/useAuthStore';
-import { useTheme } from 'next-themes'
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Button from '../Button';
-
+import { HiOutlineUserCircle } from 'react-icons/hi'
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { clsxm } from '@/lib/clsxm';
+import { Tooltip } from 'react-tooltip'
 
 export const links = [
   { href: '/', label: 'Store' },
   { href: '/library', label: 'Library' },
-  { href: '/User', label: 'User' },
+  { href: '/user', label: 'User' },
 ]
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuthStore();
   const { theme, setTheme, systemTheme } = useTheme();
 
-  const [ mounted, setMounted ] = React.useState<boolean>(false);
+  const [mounted, setMounted] = React.useState<boolean>(false);
   React.useEffect(() => setMounted(true), []);
 
   const renderThemeChanger = () => {
-    if(!mounted) return null;
+    if (!mounted) return null;
     const currentTheme = theme === 'system' ? systemTheme : theme;
-    if(currentTheme === 'dark') {
+    if (currentTheme === 'dark') {
       return (
-          <BsSunFill
-            onClick={() => setTheme('light')}
-            className={clsxm(
-              'hover:text-gray-500 transition duration-300 ease-in-out',
-              'font-bold cursor-pointer my-auto'
-            )}
-          />
-      )
+        <BsSunFill
+          onClick={() => setTheme('light')}
+          className={clsxm(
+            'hover:text-gray-500 transition duration-300 ease-in-out',
+            'font-bold cursor-pointer my-auto'
+          )}
+        />
+      );
     } else {
       return (
-          <BsMoonFill
-            onClick={() => setTheme('dark')}
-            className={clsxm(
-              'hover:text-gray-500 transition duration-300 ease-in-out',
-              'font-bold cursor-pointer my-auto'
-            )}
-          />
-      )
+        <BsMoonFill
+          onClick={() => setTheme('dark')}
+          className={clsxm(
+            'hover:text-gray-500 transition duration-300 ease-in-out',
+            'font-bold cursor-pointer my-auto'
+          )}
+        />
+      );
     }
-  }
+  };
   return (
     <>
-      <header className='shadow-md mx-auto'>
+      <header className='shadow-lg mx-auto'>
         <div className='flex justify-between py-3 px-20 items-center'>
           <Link href={'/'}>
             <Image
@@ -81,7 +82,7 @@ export default function Navbar() {
             {
               isAuthenticated ? (
                 <div className={clsxm(
-                  'tooltip relative inline-block',
+                  'relative group flex px-5',
                 )}>
                   <Image
                     src={user!.pp}
@@ -95,7 +96,7 @@ export default function Navbar() {
                     <Link href={'/'}>{user!.name}</Link>
                     <ul className='space-y-2 list-disc'>
                       <li>
-                        <Link href={'/User'}>User</Link>
+                        <Link href={'/user'}>Profile</Link>
                         <Link href={'/logout'}>Logout</Link>
                       </li>
                     </ul>
@@ -111,5 +112,5 @@ export default function Navbar() {
         </div>
       </header>
     </>
-  )
+  );
 }

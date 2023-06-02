@@ -47,3 +47,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--secondaryHover);
 }
+
+.tooltip:hover .tooltip-item {
+  visibility: visible;
+}

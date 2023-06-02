@@ -135,7 +135,6 @@ export default function SearchResultPage(){
                         <div className="w-1/4 px-5">
                             <div className="w-full">
                                 <p>Search By Tags</p>
-
                             </div>
                         </div>
                     </div>
