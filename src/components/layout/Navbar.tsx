@@ -100,7 +100,7 @@ export default function Navbar() {
                         Profile
                       </Link>
                       <hr />
-                      <Link href={'/'} onClick={() => {}}>
+                      <Link href={'/'} onClick={() => {logout()}}>
                         Logout
                       </Link>
                     </Tooltip>

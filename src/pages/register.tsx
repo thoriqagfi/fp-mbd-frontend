@@ -11,6 +11,7 @@ import { setToken } from '@/lib/token';
 import Input from '@/components/Input';
 import SelectInput from '@/components/SelectInput';
 import Button from '@/components/Button';
+import useMutationToast from '@/components/Toast/useMutationToast';
 
 export type RegisterData = {
   name: string;
@@ -20,14 +21,12 @@ export type RegisterData = {
 }
 
 export default function Register() {
-  // const { register } = useAuthStore();
-
-  const { mutate, isSuccess, isError, isLoading } = useMutation(
+  const { mutate, isSuccess, isError, isLoading } = useMutationToast(useMutation(
     async (data: RegisterData) => {
       const res = await apiMock.post(`/user`, data)
       return res;
     }
-  )
+  ))
 
   const router = useRouter();
   const methods = useForm<RegisterData>({

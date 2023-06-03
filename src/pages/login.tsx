@@ -22,10 +22,7 @@ export default function Login() {
   const router = useRouter();
   const { login, isAuthenticated, user } = useAuthStore();
 
-  const { mutate, isSuccess, isError, isLoading } = useMutationToast<
-    void,
-    LoginData
-  >(
+  const { mutate, isLoading } = useMutationToast<void,LoginData>(
     useMutation(async ({ email, password }: LoginData) => {
       apiMock.post(`/user/login`, { email, password }).then(async (res) => {
         const data = res.data;
@@ -76,7 +73,7 @@ export default function Login() {
     }
   }, [formState, reset]);
 
-  if(isLoading) return <Loading/>
+  if (isLoading) return <Loading />;
   return (
     <Layout title='Login Page'>
       <div className='h-[calc(100vh-90px)] flex items-center justify-center'>
