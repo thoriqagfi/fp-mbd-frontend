@@ -14,7 +14,7 @@ export const links = [
   { href: '/', label: 'Store' },
   { href: '/library', label: 'Library' },
   { href: '/user', label: 'User' },
-];
+]
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuthStore();

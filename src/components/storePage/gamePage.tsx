@@ -140,7 +140,13 @@ export default function GamePage(){
                                     </button>
                                 </div>
 
-                                <div className="container col-12 my-2 py-3 cust-container-top">
+                                <div className="container col-12 my-2 py-3">
+                                    <div className="w-full">
+                                        test
+                                    </div>
+                                </div>
+
+                                <div className="container col-12 my-2 py-3">
                                     <div className="w-full bg-slate-900 p-5">
                                         <div className="flex flex-wrap">
                                             <div className="w-full">

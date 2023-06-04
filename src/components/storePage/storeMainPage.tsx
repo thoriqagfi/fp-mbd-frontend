@@ -147,13 +147,13 @@ export default function StoreMainPage() {
                       href='#'
                       className='flex flex-col md:flex-row items-center shadow h-full w-full mx-auto'
                     >
-                      <div className='flex items-center basis-2/3 bg-black h-full w-full'>
+                      <div className='flex items-center basis-2/3 bg-black h-full w-48'>
                         <Image
                           height={500}
                           width={500}
                           src={item.game_picture}
                           alt='image2'
-                          className='w-full'
+                          className='w-full h-auto'
                         />
                       </div>
                       <div className='flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700'>
