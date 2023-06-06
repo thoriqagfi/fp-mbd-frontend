@@ -4,5 +4,6 @@ export type User = {
   email: string
   password: string
   pp: string
+  role: string
   token: string
 }

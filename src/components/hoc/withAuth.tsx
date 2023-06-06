@@ -11,79 +11,133 @@ export interface withAuthProps {
   user: User;
 }
 
-const hasPermission = (user: User | null, router: NextRouter) => {
-  if (!user) {
-    showToast('You are not logged in', WARNING_TOAST);
-    router.push('/login');
-    return false;
-  }
-  return true;
+type GeneralPermission = 'DEVELOPER' | 'USER' | 'auth';
+
+const HOME_ROUTE = '/';
+const DEVELOPER_ROUTE = '/dashboard';
+const LOGIN_ROUTE = '/login';
+
+// export enum RouteRole {
+//   user,
+//   developer
+// }
+
+const hasPermission = (user: User | null, permission: GeneralPermission) => {
+  //* If user is not present, return false
+  if (!user) return false;
+
+  return false;
 };
 
 const withAuth = <P extends withAuthProps>(
   Component: React.ComponentType<P>,
+  routePermission: GeneralPermission,
   withRefetch?: boolean
 ) => {
   const ComponentWithAuth = (props: Omit<P, keyof withAuthProps>) => {
-  const router = useRouter();
-  const { query } = router;
-  const { user, isLoading, login, isAuthenticated, stopLoading, logout } =
-    useAuthStore();
+    const router = useRouter();
+    const { query } = router;
+    const { user, isLoading, login, isAuthenticated, stopLoading, logout } =
+      useAuthStore();
 
-  const checkAuth = React.useCallback(() => {
-    const token = getToken();
-    if (!token) {
-      // isAuthenticated && logout();
-      stopLoading();
-      return;
-    }
-    const user = async () => {
-      try {
-        const res = await apiMock.get(`/user/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = res.data;
-        login({
-          id: data.data.id,
-          name: data.data.name,
-          email: data.data.email,
-          pp: data.data.pp,
-          token: token,
-          password: data.data.password,
-        });
-      } catch (error) {
-        removeToken();
-      } finally {
+    const checkAuth = React.useCallback(() => {
+      const token = getToken();
+      //* If token is not present, logout
+      if (!token) {
+        isAuthenticated && logout();
         stopLoading();
+        return;
       }
-    };
-    if (!isAuthenticated || withRefetch) {
-      user();
-    }
-  }, [isAuthenticated, login, logout, stopLoading]);
 
-  React.useEffect(() => {
-    if (!isLoading) {
-      if (isAuthenticated) {
-        if (!hasPermission(user, router)) return;
+      //* If token is present, check if user is authenticated
+      const user = async () => {
+        try {
+          const res = await apiMock.get(`/user/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const data = res.data;
+          login({
+            id: data.data.id,
+            name: data.data.name,
+            email: data.data.email,
+            pp: data.data.pp,
+            token: token,
+            role: data.data.role,
+            password: data.data.password,
+          });
+        } catch (error) {
+          removeToken();
+        } finally {
+          stopLoading();
+        }
+      };
+
+      //* If user is not authenticated, fetch user
+      if (!isAuthenticated || withRefetch) {
+        user();
       }
-    }
-  });
+    }, [isAuthenticated, login, logout, stopLoading]);
 
-  React.useEffect(() => {
-    checkAuth();
+    //* Check if user has permission
+    React.useEffect(() => {
+      console.log('1')
+      // * If user is not loading, check if user has permission
+      if (!isLoading || user?.role) {
+        // * If user is not authenticated, redirect to login
+        if (isAuthenticated) {
+          // * If user is authenticated, check if user has permission
+          if (
+            routePermission === 'auth' ||
+            routePermission === 'USER' ||
+            routePermission === 'DEVELOPER'
+          ) {
+            // * If user does not have permission, redirect to login
+            if (query?.redirect && routePermission !== 'auth') {
+              router.replace(query.redirect as string);
+            } else if (
+              routePermission === 'USER' &&
+              user?.role === 'DEVELOPER'
+            ) {
+              // * If user is a developer, redirect to DEVELOPER_ROUTE
+              router.replace(DEVELOPER_ROUTE);
+            } else if (
+              routePermission === 'auth' &&
+              user?.role !== 'DEVELOPER'
+            ) {
+              // * If user is authenticated and tries to access /login, redirect to /
+              router.replace(HOME_ROUTE);
+            } else {
+              // * User has permission, continue with the current route
+            }
+          } else {
+            // * User does not have permission, redirect to login and show toast message
+            showToast(
+              'Anda tidak memiliki akses ke halaman tersebut',
+              WARNING_TOAST
+            );
+            router.replace(LOGIN_ROUTE);
+          }
+        } else {
+          // * If user is not authenticated, redirect to login
+          router.replace(HOME_ROUTE);
+        }
+      }
+}, []);
 
-    window.addEventListener('focus', checkAuth);
-    return () => {
-      window.removeEventListener('focus', checkAuth);
-    };
-  }, [checkAuth]);
+    React.useEffect(() => {
+      checkAuth();
+      console.log('2')
+      window.addEventListener('focus', checkAuth);
+      return () => {
+        window.removeEventListener('focus', checkAuth);
+      };
+    }, [checkAuth]);
 
-  if(isLoading) return <Loading/>
-  return <Component {...(props as P)} />;
-  }
+    if (isLoading) return <Loading />;
+    return <Component {...(props as P)} />;
+  };
 
   return ComponentWithAuth;
 };

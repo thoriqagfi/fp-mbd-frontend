@@ -37,6 +37,7 @@ export default function Login() {
           name: user.data.data.name,
           email: user.data.data.email,
           pp: user.data.data.pp,
+          role: user.data.data.role,
           token: data.token,
           password: user.data.data.password,
         });

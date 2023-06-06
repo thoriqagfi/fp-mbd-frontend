@@ -10,7 +10,7 @@ import withAuth from '@/components/hoc/withAuth'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default withAuth(Home, true)
+export default withAuth(Home, 'auth')
 function Home() {
   const { user, isLoading, isAuthenticated} = useAuthStore()
   return (
