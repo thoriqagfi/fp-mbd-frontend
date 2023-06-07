@@ -4,6 +4,7 @@ import * as React from 'react';
 import { FormProvider, FormProviderProps, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
 import toast, {Toaster} from "react-hot-toast";
 import { apiMock } from '@/lib/apiMock';
 
@@ -11,52 +12,60 @@ import { Carousel } from '@mantine/carousel';
 import Layout from "@/Layout/Layout";
 import { Search, PlayerTrackNext, PlayerTrackPrev } from 'tabler-icons-react';
 import type { InferGetStaticPropsType, GetStaticProps } from 'next';
+//import Loading from '../Loading';
 
 export type IdData={
     id: String;
-}
+};
 
 export type SearchData = {
     keyword: string;
-}
+  };
+  
+  export type GameDataResponse = {
+    data: GameData[];
+    code: number;
+    message: string;
+    success: boolean;
+  };
+  
+  export type GameData = {
+    id: string;
+    nama: string;
+    deskripsi: string;
+    release_date: string;
+    harga: number;
+    age_rating: string;
+    system_min: string;
+    system_rec: string;
+    picture: string;
+    video: string;
+    developer: string;
+  };
 
 // perlu revisi style pake tailwind
 export default function GamePage(){
     const router = useRouter();
     const { id } = router.query;
+    console.log(`${id}`);
     const [openTab, setOpenTab] = React.useState(1);
-    //const user = await apiMock.get(`https://fp-mbd-backend-production-77db.up.railway.app/user/game/${id}`)
+    const { isLoading, error, data } = useQuery<GameDataResponse>(
+        ['data'],
+        async () => {
+          const { data } = await apiMock.get(`https://fp-mbd-backend-production-77db.up.railway.app/storeMainPage/game/${id}`);
+          //console.log(data.data.game_picture);
+          return data;
+        }
+      );
 
-    const { mutate, isSuccess, isError, isLoading } = useMutation(
-        async ({keyword}: SearchData) => {
-            await toast.promise(
-              apiMock.post(`https://fp-mbd-backend-production-77db.up.railway.app/user`, {keyword}) //sesuaikan API
-             .then( async (res) => {
-               console.log(res)
-               const data = res.data.data;
-            }),
-            {
-              success: 'Search successful',
-              loading: 'Loading...',
-              error: (e) =>{
-                return <p>
-                  {e.response ? e.response.data.message : 'Something went wrong'}
-                </p>;
-              }
-            }
-            )}
-          )
-
-    const onSubmit = ({keyword}: SearchData) => {
-        //console.log("data", {email, password}); //dummy test
-        mutate({keyword});
-    }
+    //const datajson = data.json();
+    //console.log(data.nama);
 
     const methods = useForm<SearchData>({
-        mode: "onChange",
+        mode: 'onChange',
         defaultValues: {
-          keyword: "",
-        }
+          keyword: '',
+        },
       });
     
       const {
@@ -65,15 +74,16 @@ export default function GamePage(){
         reset,
         formState: { errors },
       } = methods;
-
+    
       React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
           reset({
-            keyword: "",
+            keyword: '',
           });
         }
       }, [formState, reset]);
-    
+
+    //if(isLoading) return<Loading/>
     return( 
         <>
             <Head>
@@ -86,20 +96,53 @@ export default function GamePage(){
                 <main className="bg-blue-200 dark:bg-slate-800">
                     <div className="px-[15%] pt-5">
                         <FormProvider {...methods}>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    </div>
-                                    <input type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Games, Tags..." required/>
-                                    <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Search size={20} color="white"/></button>
-                                </div>
-                            </form>
+                            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                            <label
+                            htmlFor='default-search'
+                            className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'
+                            >
+                            Search
+                            </label>
+                            <div className='relative'>
+                            <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                                <svg
+                                aria-hidden='true'
+                                className='w-5 h-5 text-gray-500 dark:text-gray-400'
+                                fill='none'
+                                stroke='currentColor'
+                                viewBox='0 0 24 24'
+                                xmlns='http://www.w3.org/2000/svg'
+                                >
+                                <path
+                                    stroke-linecap='round'
+                                    stroke-linejoin='round'
+                                    stroke-width='2'
+                                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                                ></path>
+                                </svg>
+                            </div>
+                            <input
+                                type='search'
+                                id='default-search'
+                                className='block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                placeholder='Search Games, Tags...'
+                                required
+                            />
+                            <button
+                                type='submit'
+                                className='text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                            >
+                                <Search size={20} color='white' />
+                            </button>
+                            </div>
+                            {/* </form> */}
                         </FormProvider>
                     </div>
+                    {/* {data?.data.map((item) =>( }
+                        return (*/}
+
                     <div className="container w-10/12 flex flex-col px-0 mt-1 mx-auto">
-                        <p className="ml-2 mt-10 mb-5 font-medium text-2xl">Counter Strike: Global Offensive</p>
+                        <p className="ml-2 mt-10 mb-5 font-medium text-2xl">test</p>
 
                         <div className="container w-full flex flex-col-reverse md:flex-row px-0 bg-slate-900">
                             <div className="w-full flex md:w-2/3 p-0">
@@ -254,6 +297,9 @@ export default function GamePage(){
                             </div>
                         </div>
                     </div>
+                    
+                    {/*)))}
+                    */}
                 </main>
             </Layout>
         </>
