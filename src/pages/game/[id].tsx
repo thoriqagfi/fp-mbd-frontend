@@ -1,5 +1,4 @@
 import withAuth from '@/components/hoc/withAuth';
-import GamePage from '@/components/storePage/gamePage';
 import StoreMainPage from '@/components/storePage/storeMainPage';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -216,7 +215,7 @@ export default function GameDetail() {
               <div className='container w-full md:w-2/3 flex flex-col m-0 p-0 h-100'>
                 <div className='w-full bg-slate-700 block rounded p-5'>
                   <h5 className='ml-2 mt-4 font-medium text-lg w-2/3'>
-                    {data?.data.nama}
+                    Play {data?.data.nama}
                   </h5>
 
                   <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>

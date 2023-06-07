@@ -52,7 +52,7 @@ const withAuth = <P extends withAuthProps>(
       //* If token is present, check if user is authenticated
       const user = async () => {
         try {
-          const res = await apiMock.get(`/user/me`, {
+          const res = await apiMock.get(`/secured/user/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -62,10 +62,13 @@ const withAuth = <P extends withAuthProps>(
             id: data.data.id,
             name: data.data.name,
             email: data.data.email,
-            pp: data.data.pp,
-            token: token,
+            profile_picture: data.data.profile_picture,
             role: data.data.role,
+            token: token,
             password: data.data.password,
+            wallet: data.data.wallet,
+            list_game: data.data.list_game,
+            list_dlc: data.data.list_dlc,
           });
         } catch (error) {
           removeToken();
@@ -81,50 +84,50 @@ const withAuth = <P extends withAuthProps>(
     }, [isAuthenticated, login, logout, stopLoading]);
 
     //* Check if user has permission
-    React.useEffect(() => {
-      console.log('1')
-      // * If user is not loading, check if user has permission
-      if (!isLoading || user?.role) {
-        // * If user is not authenticated, redirect to login
-        if (isAuthenticated) {
-          // * If user is authenticated, check if user has permission
-          if (
-            routePermission === 'auth' ||
-            routePermission === 'USER' ||
-            routePermission === 'DEVELOPER'
-          ) {
-            // * If user does not have permission, redirect to login
-            if (query?.redirect && routePermission !== 'auth') {
-              router.replace(query.redirect as string);
-            } else if (
-              routePermission === 'USER' &&
-              user?.role === 'DEVELOPER'
-            ) {
-              // * If user is a developer, redirect to DEVELOPER_ROUTE
-              router.replace(DEVELOPER_ROUTE);
-            } else if (
-              routePermission === 'auth' &&
-              user?.role !== 'DEVELOPER'
-            ) {
-              // * If user is authenticated and tries to access /login, redirect to /
-              router.replace(HOME_ROUTE);
-            } else {
-              // * User has permission, continue with the current route
-            }
-          } else {
-            // * User does not have permission, redirect to login and show toast message
-            showToast(
-              'Anda tidak memiliki akses ke halaman tersebut',
-              WARNING_TOAST
-            );
-            router.replace(LOGIN_ROUTE);
-          }
-        } else {
-          // * If user is not authenticated, redirect to login
-          router.replace(HOME_ROUTE);
-        }
-      }
-}, []);
+    // React.useEffect(() => {
+    //   console.log('1')
+    //   // * If user is not loading, check if user has permission
+    //   if (!isLoading || user?.role) {
+    //     // * If user is not authenticated, redirect to login
+    //     if (isAuthenticated) {
+    //       // * If user is authenticated, check if user has permission
+    //       if (
+    //         routePermission === 'auth' ||
+    //         routePermission === 'USER' ||
+    //         routePermission === 'DEVELOPER'
+    //       ) {
+    //         // * If user does not have permission, redirect to login
+    //         if (query?.redirect && routePermission !== 'auth') {
+    //           router.replace(query.redirect as string);
+    //         } else if (
+    //           routePermission === 'USER' &&
+    //           user?.role === 'DEVELOPER'
+    //         ) {
+    //           // * If user is a developer, redirect to DEVELOPER_ROUTE
+    //           router.replace(DEVELOPER_ROUTE);
+    //         } else if (
+    //           routePermission === 'auth' &&
+    //           user?.role !== 'DEVELOPER'
+    //         ) {
+    //           // * If user is authenticated and tries to access /login, redirect to /
+    //           router.replace(HOME_ROUTE);
+    //         } else {
+    //           // * User has permission, continue with the current route
+    //         }
+    //       } else {
+    //         // * User does not have permission, redirect to login and show toast message
+    //         showToast(
+    //           'Anda tidak memiliki akses ke halaman tersebut',
+    //           WARNING_TOAST
+    //         );
+    //         router.replace(LOGIN_ROUTE);
+    //       }
+    //     } else {
+    //       // * If user is not authenticated, redirect to login
+    //       router.replace(HOME_ROUTE);
+    //     }
+    //   }
+    // }, []);
 
     React.useEffect(() => {
       checkAuth();

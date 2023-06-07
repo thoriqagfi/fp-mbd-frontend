@@ -7,12 +7,16 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { apiMock } from '@/lib/apiMock';
 
+import useAuthStore from '@/store/useAuthStore';
+
 import { Carousel } from '@mantine/carousel';
 import Layout from '@/Layout/Layout';
 import { Search, PlayerTrackNext, PlayerTrackPrev } from 'tabler-icons-react';
 import Link from 'next/link';
 import { rupiah } from '@/lib/rupiah';
 import Loading from '../Loading';
+import { ClassNames } from '@emotion/react';
+import withAuth from '../hoc/withAuth';
 
 export type SearchData = {
   keyword: string;
@@ -32,8 +36,10 @@ export type Featured = {
   game_price: number;
   game_picture: string;
 };
+export default withAuth(StoreMainPage, "auth");
 
-export default function StoreMainPage() {
+function StoreMainPage() {
+  const {user } = useAuthStore();
   const router = useRouter();
   const { isLoading, error, data } = useQuery<FeaturedApiResponse>(
     ['data'],
@@ -78,49 +84,51 @@ export default function StoreMainPage() {
       <Layout>
         <main className='bg-white dark:bg-slate-800 min-h-screen'>
           <section>
-            <div className='px-[15%] pt-5'>
-              <FormProvider {...methods}>
-                {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-                <label
-                  htmlFor='default-search'
-                  className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'
-                >
-                  Search
-                </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-                    <svg
-                      aria-hidden='true'
-                      className='w-5 h-5 text-gray-500 dark:text-gray-400'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
-                        d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    type='search'
-                    id='default-search'
-                    className='block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='Search Games, Tags...'
-                    required
-                  />
-                  <button
-                    type='submit'
-                    className='text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+            <div className='px-[15%] pt-5 flex flex-row'>
+              <div className='w-full'>
+                <FormProvider {...methods}>
+                  {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                  <label
+                    htmlFor='default-search'
+                    className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'
                   >
-                    <Search size={20} color='white' />
-                  </button>
-                </div>
-                {/* </form> */}
-              </FormProvider>
+                    Search
+                  </label>
+                  <div className='relative'>
+                    <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                      <svg
+                        aria-hidden='true'
+                        className='w-5 h-5 text-gray-500 dark:text-gray-400'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          stroke-linecap='round'
+                          stroke-linejoin='round'
+                          stroke-width='2'
+                          d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      type='search'
+                      id='default-search'
+                      className='block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                      placeholder='Search Games, Tags...'
+                      required
+                    />
+                    <button
+                      type='submit'
+                      className='text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                    >
+                      <Search size={20} color='white' />
+                    </button>
+                  </div>
+                  {/* </form> */}
+                </FormProvider>
+              </div>
             </div>
             <div className='px-[15%] py-5'>
               <p>FEATURED & RECOMMENDED</p>
@@ -128,6 +136,7 @@ export default function StoreMainPage() {
             <div style={{ display: 'flex' }} className='w-full h-96 mb-10'>
               <Carousel
                 height='100%'
+                maw='100%'
                 loop
                 withIndicators
                 controlsOffset='xl'
@@ -136,9 +145,10 @@ export default function StoreMainPage() {
                 slideGap='xl'
                 breakpoints={[
                   { minWidth: 'xl', slideSize: '70%', slideGap: 'xl' },
-                  { minWidth: 'md', slideSize: '70%', slideGap: 'xl' },
+                  { minWidth: 'md', slideSize: '80%', slideGap: 'xl' },
                   { minWidth: 'sm', slideSize: '100%', slideGap: 'xl' },
-                ]}
+                ]
+              }
                 nextControlIcon={<PlayerTrackNext size={20} color='white' />}
                 previousControlIcon={
                   <PlayerTrackPrev size={20} color='white' />
@@ -152,12 +162,16 @@ export default function StoreMainPage() {
                         e.stopPropagation();
                       }
                     }
+                    className='w-fit'
                   >
                     <Link
                       href={`/game/${item.game_id}`}
-                      className='flex flex-col md:flex-row items-center shadow h-full w-full mx-auto'
+                      className='flex flex-col md:flex-row items-center shadow h-full mx-auto'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                     >
-                      <div className='flex items-center basis-2/3 bg-black h-full w-48'>
+                      <div className='flex items-center basis-2/3 bg-black h-full'>
                         <Image
                           height={500}
                           width={500}

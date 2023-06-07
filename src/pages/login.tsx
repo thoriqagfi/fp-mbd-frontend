@@ -26,7 +26,7 @@ export default function Login() {
     useMutation(async ({ email, password }: LoginData) => {
       apiMock.post(`/user/login`, { email, password }).then(async (res) => {
         setToken("token", res.data.data);
-        const user = await apiMock.get(`/user/me`, {
+        const user = await apiMock.get(`/secured/user/me`, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
           },
@@ -35,10 +35,13 @@ export default function Login() {
           id: user.data.data.id,
           name: user.data.data.name,
           email: user.data.data.email,
-          pp: user.data.data.pp,
+          profile_picture: user.data.data.profile_picture,
           role: user.data.data.role,
           token: res.data.data,
           password: user.data.data.password,
+          wallet: user.data.data.wallet,
+          list_game: user.data.data.list_game,
+          list_dlc: user.data.data.list_dlc,
         });
       });
     })
