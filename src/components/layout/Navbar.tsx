@@ -14,6 +14,7 @@ export const links = [
   { href: '/', label: 'Store' },
   { href: '/library', label: 'Library' },
   { href: '/user', label: 'User' },
+  { href: '/game', label: 'Game'}
 ]
 
 export default function Navbar() {

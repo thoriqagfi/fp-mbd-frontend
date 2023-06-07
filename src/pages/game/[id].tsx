@@ -51,16 +51,6 @@ export type GameData = {
 
 export default function GameDetail() {
   const { id } = useRouter().query;
-  console.log(id)
-  const fetchData = async () => {
-    const data = await apiMock.get(
-      `/storeMainPage/game/${id}`
-    );
-    console.log(data)
-    return data;
-  }
-
-  console.log(`${id}`);
   const [openTab, setOpenTab] = React.useState(1);
   const { isLoading, error, data } = useQuery(
     ['game_detail'],
@@ -71,9 +61,6 @@ export default function GameDetail() {
       return data;
     }
   );
-
-  //const datajson = data.json();
-  //console.log(data.nama);
 
   const methods = useForm<SearchData>({
     mode: 'onChange',
