@@ -25,8 +25,7 @@ export default function Login() {
   const { mutate, isLoading } = useMutationToast<void,LoginData>(
     useMutation(async ({ email, password }: LoginData) => {
       apiMock.post(`/user/login`, { email, password }).then(async (res) => {
-        const data = res.data;
-        setToken('token', data.data);
+        setToken("token", res.data.data);
         const user = await apiMock.get(`/user/me`, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -38,7 +37,7 @@ export default function Login() {
           email: user.data.data.email,
           pp: user.data.data.pp,
           role: user.data.data.role,
-          token: data.token,
+          token: res.data.data,
           password: user.data.data.password,
         });
       });
