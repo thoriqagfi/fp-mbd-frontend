@@ -38,7 +38,7 @@ export default function StoreMainPage() {
   const { isLoading, error, data } = useQuery<FeaturedApiResponse>(
     ['data'],
     async () => {
-      const { data } = await apiMock.get(`https://fp-mbd-backend-production-77db.up.railway.app/storeMainPage/featured`);
+      const { data } = await apiMock.get(`/storeMainPage/featured`);
       //console.log(data.data.game_picture);
       return data;
     }
@@ -145,13 +145,16 @@ export default function StoreMainPage() {
                 }
               >
                 {data?.data.map((item) => (
-                  <Carousel.Slide key={item.game_id}>
-                    <a
-                      onClick={() =>
-                        router.push({
-                            pathname: '/gamePage',
-                            query: { id: 2},
-                      })}
+                  <Carousel.Slide
+                    key={item.game_id}
+                    onClick={
+                      (e) => {
+                        e.stopPropagation();
+                      }
+                    }
+                  >
+                    <Link
+                      href={`/game/${item.game_id}`}
                       className='flex flex-col md:flex-row items-center shadow h-full w-full mx-auto'
                     >
                       <div className='flex items-center basis-2/3 bg-black h-full w-48'>
@@ -176,7 +179,7 @@ export default function StoreMainPage() {
                           </p>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   </Carousel.Slide>
                 ))}
               </Carousel>
@@ -551,7 +554,8 @@ export default function StoreMainPage() {
               </div>
             </a>
             <Link
-              href="/game/2"
+              // href={`/game/${data?.data.game_id}`}
+              href={`/game/2}`}
               className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
             >
               <Image
