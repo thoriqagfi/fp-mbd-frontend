@@ -568,8 +568,7 @@ function StoreMainPage() {
               </div>
             </a>
             <Link
-              // href={`/game/${data?.data.game_id}`}
-              href={`/game/2}`}
+              href={`/game/34`}
               className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
             >
               <Image

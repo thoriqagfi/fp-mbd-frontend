@@ -1,4 +1,5 @@
 import StoreMainPage from '@/components/storePage/storeMainPage'
+import SearchResultPage from '@/pages/searchResultPage'
 import useAuthStore from '@/store/useAuthStore'
 import withAuth from '@/components/hoc/withAuth'
 
@@ -8,6 +9,7 @@ function Home() {
   return (
     <>
       <StoreMainPage/>
+      {/*<SearchResultPage/>*/}
     </>
   )
 }

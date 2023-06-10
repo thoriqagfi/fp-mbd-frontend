@@ -35,7 +35,7 @@ export default function Login() {
           id: user.data.data.id,
           name: user.data.data.name,
           email: user.data.data.email,
-          profile_picture: user.data.data.profile_picture,
+          profile_image: user.data.data.profile_image,
           role: user.data.data.role,
           token: res.data.data,
           password: user.data.data.password,

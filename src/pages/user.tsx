@@ -11,34 +11,21 @@ import { getToken } from '@/lib/token';
 
 import { Carousel } from '@mantine/carousel';
 import Layout from "@/Layout/Layout";
-import { Search, PlaylistAdd, DeviceGamepad2 } from 'tabler-icons-react';
+import { Search, PlaylistAdd, DeviceGamepad2, Plus } from 'tabler-icons-react';
 import withAuth from "@/components/hoc/withAuth";
 import useAuthStore from "@/store/useAuthStore";
 
-export type UserDataResponse = {
-    data: UserData;
+  export type DevReleaseDataResponse = {
+    data: ListGameDLC;
     code: number;
     message: string;
     success: boolean;
   };
 
-  export type DevReleaseDataResponse = {
-    data: ListGame[];
-    code: number;
-    message: string;
-    success: boolean;
-  };
-  
-  export type UserData = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    profile_image: string;
-    role: string;
-    wallet: number;
-    list_game: ListGame[];
-    list_dlc: ListDLC[];
+
+  export type ListGameDLC = {
+    ListGames: ListGame[];
+    ListDLC: ListDLC[];
   };
 
   export type ListGame = {
@@ -54,6 +41,7 @@ export type UserDataResponse = {
     video: string;
     developer: string;
   };
+  
   export type ListDLC = {
     id: string;
     nama: string;
@@ -68,10 +56,18 @@ export type UserDataResponse = {
 
 function User(){
     const {user} = useAuthStore();
-
-    if(user?.role === "Developer"){
-
-    };
+    const { isLoading, error, data } = useQuery<DevReleaseDataResponse>(
+        ['data'],
+        async () => {
+            const {data} = await apiMock.get(`/secured/user/medev`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`,
+            },
+            });
+            //console.log(data.data.game_picture);
+            return data;
+        }
+        );
 
     return(
         <>
@@ -88,7 +84,7 @@ function User(){
                    <div className="w-full py-10 px-16 flex flex-col lg:flex-row bg-slate-900">
                        <div className="w-full lg:w-2/3 flex flex-col lg:flex-row">
                            <div className="w-full lg:w-1/3">
-                               <Image height={300} width={300} src="https://drive.google.com/uc?export=view&id=11P8WpnMyktxFcsxDSYEi2bI2gK4MqiPM" alt="image2" className="w-auto h-2/3 lg:h-full lg:w-auto mx-auto lg:mx-0 float-none lg:float-right"/>
+                               <Image height={300} width={300} alt="image2" className="w-auto h-2/3 lg:h-full lg:w-auto mx-auto lg:mx-0 float-none lg:float-right" src={user?.profile_image}/>
                            </div>
                            <div className="ml-0 lg:ml-10 mt-5 lg:mt-0 w-full lg:w-2/3 grid content-center">
                                <p className="font-bold text-3xl mx-auto lg:mx-0">{user?.name}</p>
@@ -97,51 +93,42 @@ function User(){
                        </div>
                        <div className="w-full lg:w-1/3 mt-5 lg:mt-0 grid content-center">
                            <div className="flex flex-row items-center mx-auto lg:mx-0">
-                               <DeviceGamepad2 size={24} strokeWidth={2} color={'#ffff'}/><p className="font-semibold text-xl ml-3">10</p><p className="font-normal text-xl ml-2">Released Games</p>
+                               <DeviceGamepad2 size={24} strokeWidth={2} color={'#ffff'}/><p className="font-semibold text-xl ml-3">{(data?.data.ListGames === undefined || data?.data.ListGames === null)  ? 0 : data?.data.ListGames.length}</p><p className="font-normal text-xl ml-2">Released Games</p>
                            </div>
                            <div className="flex flex-row items-center mx-auto lg:mx-0 mt-5">
-                               <PlaylistAdd size={24} strokeWidth={2} color={'#ffff'}/><p className="font-semibold text-xl ml-3">10</p><p className="font-normal text-xl ml-2">Released DLC's</p>
+                               <PlaylistAdd size={24} strokeWidth={2} color={'#ffff'}/><p className="font-semibold text-xl ml-3">{(data?.data.ListDLC === undefined || data?.data.ListDLC === null) ? 0 : data?.data.ListDLC.length}</p><p className="font-normal text-xl ml-2">Released DLC's</p>
+                           </div>
+
+                           <div className="flex flex-row items-center mx-auto lg:mx-0 mt-4">
+                               <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'><Plus size={12} strokeWidth={2} color={'#ffff'}/></button><p className="font-light text-md ml-2">Upload Game</p>
                            </div>
                        </div>
                    </div>
                    <div className="w-full mt-5 py-5 px-16 flex flex-col gap-10 xl:flex-row bg-slate-900">
                        <div className="w-full xl:w-1/2">
                            <p className="font-normal text-xl ml-2 my-5">Released Games</p>
-                            
+                           {(data?.data.ListGames === undefined || data?.data.ListGames === null)? <p>This developer hasn't released any game's</p> : data?.data.ListGames.map((item) => (
                            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
-                           <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q" alt=""/>
-                           <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                               <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Monster Hunter</h5>
-                               <p className="font-normal text-gray-700 dark:text-gray-400">Action, Multiplayer, Open World</p>
-                           </div>
-                       </div>
-
-                       <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
-                           <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N" alt=""/>
-                           <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                               <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">STRAY</h5>
-                               <p className="font-normal text-gray-700 dark:text-gray-400">Adventure, Strategy, Open World</p>
-                           </div>
-                       </div>
+                                <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
+                                <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
+                                    <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
+                                    {/*<p className="font-normal text-gray-700 dark:text-gray-400">Action, Multiplayer, Open World</p>*/}
+                                </div>
+                            </div>
+                           ))}
                        
                        </div>
                        
                        <div className="w-full xl:w-1/2">
                        <p className="font-normal text-xl ml-2 my-5">Released DLC's</p>
-
-                       <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
-                               <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1NLOiSDsYIjvMkSJWXWqR39oxr4NG-RiS" alt=""/>
+                       {(data?.data.ListDLC === undefined || data?.data.ListDLC === null)? <p>This developer hasn't released any DLC's</p> : data?.data.ListDLC.map((item) => (
+                            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
+                               <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
                                <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                                   <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Monster Hunter World : Iceborne</h5>
+                                   <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
                                </div>
                            </div>
-
-                           <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
-                               <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                               <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                                   <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
-                               </div>
-                           </div>
+                       ))}
                        
                        </div>
                    </div>
@@ -154,7 +141,7 @@ function User(){
                         <div className="w-full py-10 px-16 flex flex-col lg:flex-row bg-slate-900">
                             <div className="w-full lg:w-2/3 flex flex-col lg:flex-row">
                                 <div className="w-full lg:w-1/3">
-                                    <Image height={300} width={300} src="https://drive.google.com/uc?export=view&id=11P8WpnMyktxFcsxDSYEi2bI2gK4MqiPM" alt="image2" className="w-auto h-2/3 lg:h-full lg:w-auto mx-auto lg:mx-0 float-none lg:float-right"/>
+                                    <Image height={300} width={300} src={user?.profile_image} alt="image2" className="w-auto h-2/3 lg:h-full lg:w-auto mx-auto lg:mx-0 float-none lg:float-right"/>
                                 </div>
                                 <div className="ml-0 lg:ml-10 mt-5 lg:mt-0 w-full lg:w-2/3 grid content-center">
                                     <p className="font-bold text-3xl mx-auto lg:mx-0">{user?.name}</p>

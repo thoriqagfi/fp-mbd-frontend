@@ -62,7 +62,7 @@ const withAuth = <P extends withAuthProps>(
             id: data.data.id,
             name: data.data.name,
             email: data.data.email,
-            profile_picture: data.data.profile_picture,
+            profile_image: data.data.profile_image,
             role: data.data.role,
             token: token,
             password: data.data.password,

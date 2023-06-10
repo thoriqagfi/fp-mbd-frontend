@@ -3,7 +3,7 @@ export type User = {
   name: string
   email: string
   password: string
-  profile_picture: string
+  profile_image: string
   role: string
   token: string
   wallet: number;
