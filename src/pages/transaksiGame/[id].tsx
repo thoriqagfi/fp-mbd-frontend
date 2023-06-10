@@ -111,13 +111,6 @@ export default function TransaksiGame() {
                 >
                   Purchase
                 </Button>
-
-                <span className="flex gap-2 mt-2">
-                  <h3 className="text-gray-600">Already have an account?</h3>
-                  <Link className="hover:underline" href="/login">
-                    Login
-                  </Link>
-                </span>
               </form>
             </FormProvider>}
           </div>
