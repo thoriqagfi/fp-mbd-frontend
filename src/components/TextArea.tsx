@@ -31,7 +31,7 @@ const Textarea: React.FC<TextareaProps> = ({
         {...register(id, registerType)}
         id={id}
         placeholder={placeholder}
-        className="w-full focus:outline-none bg-white text-gray-900 hover:text-gray-950"
+        className="w-full focus:outline-none bg-white text-gray-900 hover:text-gray-950 p-2"
       />
       {errors[id] && (
         <p className="text-red-500 text-[11px] py-0.5">{errorMessage}</p>

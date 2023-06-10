@@ -21,21 +21,21 @@ export type UploadData = {
     nama: string;
     deskripsi: string;
     harga: number;
-    age_rating: string;
     system_min: string;
     system_rec: string;
     picture: string;
-    video: string;
+    game_id: number;
 }
 
 export default function UploadGame() {
-
-  const {mutate, isSuccess, isError} = useMutationToast(useMutation(async ( upload_data: UploadData) => {
+    const id = parseInt(useRouter().query.id as string, 10);
+    const {mutate, isSuccess, isError} = useMutationToast(useMutation(async ( upload_data: UploadData) => {
+        upload_data.game_id = id;
       console.log(upload_data);
-      await apiMock.post(`/secured/user/upload`,  upload_data, {
+      /*await apiMock.post(`/secured/user/upload`,  upload_data, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
-      }})
+      }})*/
   }));
 
 
@@ -67,11 +67,9 @@ export default function UploadGame() {
         nama: "",
         deskripsi: "",
         harga: 0,
-        age_rating: "",
         system_min: "",
         system_rec: "",
         picture: "",
-        video: "",
       });
     }
     if(isError) {
@@ -81,12 +79,12 @@ export default function UploadGame() {
 
   return (
     <Layout
-      title='Upload Game Page'
+      title='Upload DLC Page'
     >
       <main className='min-h-[calc(100vh-85px)] flex items-center justify-center py-5'>
         <div className='w-full md:w-[calc(100vw/2)] flex justify-center items-center'>
           <div className='border-2 rounded-xl border-black dark:border-white px-5 py-10 flex flex-col justify-center items-center w-full'>
-            <h1 className='text-center font-bold text-xl my-5'>Upload your game</h1>
+            <h1 className='text-center font-bold text-xl my-5'>Upload your DLC</h1>
 
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center gap-y-1 w-3/4'>
@@ -94,16 +92,16 @@ export default function UploadGame() {
                   id='nama'
                   titleLabel='Title'
                   inputType='nama'
-                  placeholder='Game title'
+                  placeholder='DLC title'
                   registerType={{
-                    required: 'Game title is required',
+                    required: 'DLC title is required',
                   }}
                   errorMessage={errors.nama?.message}
                 />
 
                 <TextArea
                   id='deskripsi'
-                  placeholder='Game description'
+                  placeholder='DLC description'
                   required={true}
                   helperText={errors.deskripsi?.message}
                   minRows={1}
@@ -119,27 +117,17 @@ export default function UploadGame() {
                   id='harga'
                   titleLabel='Price'
                   inputType= 'number'    
-                  placeholder='Game price'
+                  placeholder='DLC price'
                   registerType={{
-                    required: 'Game price is required',
+                    required: 'DLC price is required',
                     valueAsNumber: true,
                   }}
                   errorMessage={errors.harga?.message}           
                 />
 
-                <SelectInput
-                  id="age_rating"
-                  titleLabel="Age rating"
-                  registerType={{
-                    required: "This field is required!",
-                  }}
-                  
-                  options={['PEGI-3', 'PEGI-7', 'PEGI-12', 'PEGI-16', 'PEGI-18']}
-                />
-
                 <TextArea
                   id='system_min'
-                  placeholder='Game minimum system requirement'
+                  placeholder='DLC minimum system requirement'
                   required = {true}
                   helperText={errors.system_min?.message}
                   minRows={1}
@@ -153,7 +141,7 @@ export default function UploadGame() {
 
                 <TextArea
                   id='system_rec'
-                  placeholder='Game recommended system requirement'
+                  placeholder='DLC recommended system requirement'
                   required = {true}
                   helperText={errors.system_rec?.message}
                   minRows={1}
@@ -169,22 +157,11 @@ export default function UploadGame() {
                   id='picture'
                   titleLabel='Picture'
                   inputType='picture'
-                  placeholder='Game picture link'
+                  placeholder='DLC picture link'
                   registerType={{
                     required: 'This field is required',
                   }}
                   errorMessage={errors.picture?.message}
-                />
-
-                <Input
-                  id='video'
-                  titleLabel='Video'
-                  inputType='video'
-                  placeholder='Game video preview link'
-                  registerType={{
-                    required: 'This field is required',
-                  }}
-                  errorMessage={errors.video?.message}
                 />
 
                 <Button

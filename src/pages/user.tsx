@@ -56,6 +56,7 @@ import Link from "next/link";
  export default withAuth(User, "USER");
 
 function User(){
+    const router = useRouter();
     const {user} = useAuthStore();
     const { isLoading, error, data } = useQuery<DevReleaseDataResponse>(
         ['data'],
@@ -117,8 +118,19 @@ function User(){
                            <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
                                 <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
                                 <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                                    <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
-                                    {/*<p className="font-normal text-gray-700 dark:text-gray-400">Action, Multiplayer, Open World</p>*/}
+                                    <h5 className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
+                                    <div className="flex flex-row items-center mt-1">
+                                        <a onClick={() =>
+                                            router.push({
+                                                pathname: '/uploadDLC',
+                                                query: { id: `${item.id}`},
+                                              })}>
+                                            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'>
+                                                <Plus size={12} strokeWidth={2} color={'#ffff'}/>
+                                            </button>
+                                            </a>
+                                        <p className="font-light text-md ml-2">Add DLC</p>
+                                    </div>
                                 </div>
                             </div>
                            ))}
@@ -131,7 +143,7 @@ function User(){
                             <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3">
                                <Image height={500} width={500} className="object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
                                <div className="flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full">
-                                   <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
+                                   <h5 className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
                                </div>
                            </div>
                        ))}

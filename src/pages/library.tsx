@@ -25,7 +25,11 @@ export default function Library(){
             </Head>
             <Layout>
             <main className="bg-blue-200 dark:bg-slate-800 p-12 flex flex-wrap justify-center gap-4 min-h-[calc(100vh-90px)]">
-                {user?.list_game && user?.list_game.map((item) => (
+                {(user?.list_game === undefined || user?.list_game ===null)?
+                <div className="w-full min-h-full grid justify-center">
+                    <p className="my-auto">Your library is currently empty</p>
+                </div>
+                : user?.list_game.map((item) => (
                     <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
                         <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
                         <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full h-full gap-5">
@@ -38,7 +42,7 @@ export default function Library(){
                             </div>
                         </div>
                     </div>
-                ))}
+                ))} 
             </main>
             </Layout>
         </>

@@ -154,7 +154,7 @@ function StoreMainPage() {
                   <PlayerTrackPrev size={20} color='white' />
                 }
               >
-                {data?.data.map((item) => (
+                {data?.data && data?.data.map((item) => (
                   <Carousel.Slide
                     key={item.game_id}
                     onClick={
