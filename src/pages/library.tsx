@@ -11,9 +11,10 @@ import { apiMock } from '@/lib/apiMock';
 import { Carousel } from '@mantine/carousel';
 import Layout from "@/Layout/Layout";
 import { PlayerPlay, Search} from 'tabler-icons-react';
+import useAuthStore from "@/store/useAuthStore";
 
 export default function Library(){
-    const [openTab, setOpenTab] = React.useState(1);
+    const {user} = useAuthStore();
     return(
         <>
             <Head>
@@ -23,38 +24,21 @@ export default function Library(){
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-            <main className="bg-blue-200 dark:bg-slate-800 p-12 flex flex-wrap justify-center gap-4">
-                <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
-                    <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                    <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full gap-5">
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button><h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
+            <main className="bg-blue-200 dark:bg-slate-800 p-12 flex flex-wrap justify-center gap-4 min-h-[calc(100vh-90px)]">
+                {user?.list_game && user?.list_game.map((item) => (
+                    <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
+                        <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src={item.picture} alt=""/>
+                        <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full h-full gap-5">
+                            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button>
+                            <div className="w-full flex flex-col">
+                                <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{item.nama}</h5>
+                                <p className='font-normal line-clamp-1 text-gray-700 dark:text-gray-400'>
+                                    {item.deskripsi}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
-                    <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                    <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full gap-5">
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button><h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
-                    <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                    <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full gap-5">
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button><h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
-                    <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                    <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full gap-5">
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button><h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 mb-3 w-96 h-72">
-                    <Image height={500} width={500} className="object-cover w-full h-auto rounded-t-lg md:rounded-none md:rounded-l-lg" src="https://drive.google.com/uc?export=view&id=1s8E2fVvfR-oCzjYx3A9pL9-h7NrVGzKL" alt=""/>
-                    <div className="flex flex-row p-0 sm:p-4 leading-normal items-center pl-2 sm:pl-5 w-full gap-5">
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'><PlayerPlay/></button><h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Stray - Original Soundtrack</h5>
-                    </div>
-                </div>
-
+                ))}
             </main>
             </Layout>
         </>

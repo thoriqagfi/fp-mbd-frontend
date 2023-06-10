@@ -14,6 +14,7 @@ import Layout from "@/Layout/Layout";
 import { Search, PlaylistAdd, DeviceGamepad2, Plus } from 'tabler-icons-react';
 import withAuth from "@/components/hoc/withAuth";
 import useAuthStore from "@/store/useAuthStore";
+import Link from "next/link";
 
   export type DevReleaseDataResponse = {
     data: ListGameDLC;
@@ -67,7 +68,7 @@ function User(){
             //console.log(data.data.game_picture);
             return data;
         }
-        );
+    );
 
     return(
         <>
@@ -100,7 +101,12 @@ function User(){
                            </div>
 
                            <div className="flex flex-row items-center mx-auto lg:mx-0 mt-4">
-                               <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'><Plus size={12} strokeWidth={2} color={'#ffff'}/></button><p className="font-light text-md ml-2">Upload Game</p>
+                                <Link href="/uploadGame">
+                                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'>
+                                        <Plus size={12} strokeWidth={2} color={'#ffff'}/>
+                                    </button>
+                                </Link>
+                                <p className="font-light text-md ml-2">Upload Game</p>
                            </div>
                        </div>
                    </div>
