@@ -1,5 +1,3 @@
-import withAuth from '@/components/hoc/withAuth';
-import StoreMainPage from '@/components/storePage/storeMainPage';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
@@ -7,16 +5,12 @@ import Head from 'next/head';
 import * as React from 'react';
 
 import { FormProvider, FormProviderProps, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import toast, { Toaster } from 'react-hot-toast';
 import { apiMock } from '@/lib/apiMock';
-
-import { Carousel } from '@mantine/carousel';
 import Layout from '@/Layout/Layout';
 import { Search, PlayerTrackNext, PlayerTrackPrev } from 'tabler-icons-react';
-import type { InferGetStaticPropsType, GetStaticProps } from 'next';
 import { rupiah } from '@/lib/rupiah';
-//import Loading from '../Loading';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export type IdData = {
   id: String;
@@ -33,8 +27,19 @@ export type GameDataResponse = {
   success: boolean;
 };
 
+export interface GameListDLC {
+  id: number;
+  nama: string;
+  deskripsi: string;
+  harga: number;
+  system_min: string;
+  system_rec: string;
+  picture: string;
+  game_id: number;
+}
+
 export type GameData = {
-  id: string;
+  id: number;
   nama: string;
   deskripsi: string;
   release_date: string;
@@ -45,6 +50,7 @@ export type GameData = {
   picture: string;
   video: string;
   developer: string;
+  list_dlc: GameListDLC[];
 };
 
 // export default withAuth(GameDetail, 'auth');
@@ -52,15 +58,11 @@ export type GameData = {
 export default function GameDetail() {
   const { id } = useRouter().query;
   const [openTab, setOpenTab] = React.useState(1);
-  const { isLoading, error, data } = useQuery(
-    ['game_detail'],
-    async () => {
-      const gameID = id;
-      const {data} = await apiMock.get(`/storeMainPage/game/${gameID}`);
-      //console.log(data.data.game_picture);
-      return data;
-    }
-  );
+  const { isLoading, error, data } = useQuery(['game_detail'], async () => {
+    const res = await apiMock.get(`/storeMainPage/game/${id}`);
+    return res.data;
+  });
+  const listDLC: GameListDLC[] = data?.data.list_dlc
 
   const methods = useForm<SearchData>({
     mode: 'onChange',
@@ -138,11 +140,11 @@ export default function GameDetail() {
               {/* </form> */}
             </FormProvider>
           </div>
-          {/* {data?.data.map((item) =>( }
-                        return (*/}
 
           <div className='container w-10/12 flex flex-col px-0 mt-1 mx-auto'>
-            <p className='ml-2 mt-10 mb-5 font-medium text-2xl'>{data?.data.nama}</p>
+            <p className='ml-2 mt-10 mb-5 font-medium text-2xl'>
+              {data?.data.nama}
+            </p>
 
             <div className='container w-full flex flex-col-reverse md:flex-row px-0 bg-slate-900'>
               <div className='w-full flex md:w-2/3 p-0'>
@@ -206,12 +208,44 @@ export default function GameDetail() {
                   </h5>
 
                   <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
-                  {rupiah(data?.data.harga)}
+                    {rupiah(data?.data.harga)}
                   </button>
                 </div>
 
                 <div className='container col-12 my-2 py-3'>
                   <div className='w-full'>{data?.data.deskripsi}</div>
+                </div>
+
+                <div>
+                  <h1 className='text-xl font-bold py-5'>List DLC</h1>
+                  {
+                    listDLC && listDLC?.map((data) => {
+                      return (
+                        <Link href={`/dlc/${data.id}`} className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'>
+                          <Image
+                            height={500}
+                            width={500}
+                            className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
+                            src={data.picture}
+                            alt=''
+                          />
+                          <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
+                            <h5 className='mb-2 line-clamp-2 text-base font-bold tracking-tight text-gray-900 dark:text-white'>
+                              {data.nama}
+                            </h5>
+                            <p className='font-normal line-clamp-1 text-gray-700 dark:text-gray-400'>
+                              {data.deskripsi}
+                            </p>
+                          </div>
+                          <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
+                            <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
+                              {rupiah(data.harga)}
+                            </p>
+                          </div>
+                        </Link>
+                      )
+                    })
+                  }
                 </div>
 
                 <div className='container col-12 my-2 py-3'>
@@ -268,49 +302,12 @@ export default function GameDetail() {
                                 className={openTab === 1 ? 'block' : 'hidden'}
                                 id='link1'
                               >
-                                {/* <p>
-                                  OS: Windows® 7/Vista/XP
-                                  <br />
-                                  Processor: Intel® Core™ 2 Duo E6600 or AMD
-                                  Phenom™ X3 8750 processor or better
-                                  <br />
-                                  Memory: 2 GB RAM
-                                  <br />
-                                  Graphics: Video card must be 256 MB or more
-                                  and should be a DirectX 9-compatible with
-                                  support for Pixel Shader 3.0
-                                  <br />
-                                  DirectX: Version 9.0c
-                                  <br />
-                                  Storage: 15 GB available space
-                                  <br />
-                                </p> */}
-                                <p>
-                                  {data?.data.system_min}
-                                </p>
+                                <p>{data?.data.system_min}</p>
                               </div>
                               <div
                                 className={openTab === 2 ? 'block' : 'hidden'}
                                 id='link2'
                               >
-                                {/* <p>
-                                  CPU: Intel® Core™2 Duo Processor E6600 2.4 GHz
-                                  or AMD Phenom™ X3 8750 2.4 GHz processor.
-                                  <br />
-                                  GPU: Any video card with 256 MB of VRAM or
-                                  higher.
-                                  <br />
-                                  RAM: 2 GB of memory.
-                                  <br />
-                                  HDD: 15 GB of free space.
-                                  <br />
-                                  OS: Windows XP or higher operating system.
-                                  <br />
-                                  DirectX: 9.0c or higher.
-                                  <br />
-                                  Shader Model: 3.0 or higher.
-                                  <br />
-                                </p> */}
                                 {data?.data.system_rec}
                               </div>
                             </div>
@@ -372,9 +369,6 @@ export default function GameDetail() {
               </div>
             </div>
           </div>
-
-          {/*)))}
-           */}
         </main>
       </Layout>
     </>
