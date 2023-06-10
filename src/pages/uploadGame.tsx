@@ -30,13 +30,13 @@ export type UploadData = {
 
 export default function UploadGame() {
 
-  const {mutate, isSuccess, isError} = useMutation(async ( upload_data: UploadData) => {
+  const {mutate, isSuccess, isError} = useMutationToast(useMutation(async ( upload_data: UploadData) => {
       console.log(upload_data);
-      apiMock.post(`/secured/user/upload`, { upload_data }, {
+      await apiMock.post(`/secured/user/upload`,  upload_data, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
       }})
-  });
+  }));
 
 
 
