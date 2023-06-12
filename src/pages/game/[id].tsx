@@ -130,7 +130,7 @@ export default function GameDetail() {
                   className='block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   placeholder='Search Games, Tags...'
                   required
-                />        
+                />
                 <button
                   type='submit'
                   className='text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
@@ -208,6 +208,16 @@ export default function GameDetail() {
                   <h5 className='ml-2 mt-4 font-medium text-lg w-2/3'>
                     Play {data?.data.nama}
                   </h5>
+
+                  <button
+                    // onClick={}
+                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
+                    Buy {rupiah(data?.data.harga)}
+                  </button>
+                </div>
+
+                <div className='container col-12 my-2 py-3'>
+                  <div className='w-full'>{data?.data.deskripsi}</div>
                   <Link href={`/transaksiGame/${data?.data.id}`}>
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
                     {rupiah(data?.data.harga)}
@@ -216,8 +226,9 @@ export default function GameDetail() {
                 </div>
 
                 <div>
-                  {listDLC && <h1 className='text-xl font-bold py-5'>List DLC</h1>}
-                  {listDLC && listDLC?.map((data) => {
+                  {listDLC && ( <h1 className='text-xl font-bold py-5'>List DLC</h1> )}
+                  {
+                    listDLC ? listDLC?.map((data) => {
                       return (
                         <Link href={`/dlc/${data.id}`} className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'>
                           <Image
@@ -242,7 +253,9 @@ export default function GameDetail() {
                           </div>
                         </Link>
                       )
-                    })
+                    }) : (
+                      <p>There is no DLC's exists</p>
+                    )
                   }
                 </div>
 

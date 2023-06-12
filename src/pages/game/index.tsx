@@ -12,6 +12,7 @@ import Layout from '@/Layout/Layout';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { rupiah } from '@/lib/rupiah';
+import SearchInput from '@/components/SearchInput';
 
 const fetchPost = async (pageParam?: number, limitParam?: number) => {
   const { data } = await apiMock.get(`/storeMainPage/game/all`);
@@ -25,10 +26,15 @@ const Game: NextPage = () => {
   //     getNextPageParam: (lastPage, allPages) =>
   //       lastPage.length === 0 ? undefined : allPages.length + 1,
   //   });
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(10);
+  const [search, setSearch] = React.useState('');
 
   const { isLoading, error, isError, data } = useQuery(['game'], () =>
     fetchPost(1)
   );
+
+  const searchGame = (input: string) => {};
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Error While Fetching Data</div>;
@@ -42,41 +48,62 @@ const Game: NextPage = () => {
       </Head>
       <Layout>
         <main className='bg-white dark:bg-slate-800 min-h-screen'>
-          <section className='grid grid-cols-4'>
-            <div className=''>{/* Filter dll */}</div>
-            <div className='w-full px-5 md:px-10 py-10 col-span-3'>
+          <section className='grid grid-cols-4 px-5 md:px-10 py-10'>
+            <div className='py-4 mx- rounded-xl h-full'>
+              <SearchInput
+                // label='Search Game'
+                placeholder='Search Games, Tags...'
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+              <div className='mx-10'>
+                {/* <p className='font-bold text-xl py-3'>Filter</p> */}
+              </div>
+            </div>
+            <div className='w-full col-span-3'>
               <div className=''>
-                {data?.data.map((game: GameData) => (
-                  <>
-                    {/* Card */}
-                    <Link
-                      // href={`/game/${data?.data.game_id}`}
-                      href={`/game/${game.id}`}
-                      className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
-                    >
-                      <Image
-                        height={500}
-                        width={500}
-                        className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
-                        src={game.picture}
-                        alt=''
-                      />
-                      <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
-                        <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                          {game.nama}
-                        </h5>
-                        <p className='font-normal line-clamp-1 text-gray-700 dark:text-gray-400'>
-                          {game.deskripsi}
-                        </p>
-                      </div>
-                      <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
-                        <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
-                          {rupiah(game.harga)}
-                        </p>
-                      </div>
-                    </Link>
-                  </>
-                ))}
+                {data?.data.map((game: GameData) => {
+                  if (game.nama.toLowerCase().includes(search.toLowerCase()))
+                    return (
+                      <>
+                        {/* Card */}
+                        <Link
+                          // href={`/game/${data?.data.game_id}`}
+                          href={`/game/${game.id}`}
+                          className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
+                        >
+                          {
+                            game.picture.length < 10 ? (
+                              <Image
+                                height={500}
+                                width={500}
+                                className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
+                                src={ game.picture.length < 10 ? game.picture : '/logo-steam.png'}
+                                alt=''
+                              />
+                            ) : (
+                              ''
+                            )
+                          }
+                          <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
+                            <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+                              {game.nama}
+                            </h5>
+                            <p className='font-normal line-clamp-1 text-gray-700 dark:text-gray-400'>
+                              {game.deskripsi}
+                            </p>
+                          </div>
+                          <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
+                            <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
+                              {rupiah(game.harga)}
+                            </p>
+                          </div>
+                        </Link>
+                      </>
+                    );
+                })}
               </div>
             </div>
           </section>
