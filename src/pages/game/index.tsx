@@ -75,12 +75,12 @@ const Game: NextPage = () => {
                           className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
                         >
                           {
-                            game.picture.length < 10 ? (
+                            game.picture.length > 10 ? (
                               <Image
                                 height={500}
                                 width={500}
                                 className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
-                                src={ game.picture.length < 10 ? game.picture : '/logo-steam.png'}
+                                src={ game.picture.length > 10 ? game.picture : '/logo-steam.png'}
                                 alt=''
                               />
                             ) : (

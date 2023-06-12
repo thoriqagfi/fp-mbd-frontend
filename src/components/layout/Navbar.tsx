@@ -5,21 +5,23 @@ import useAuthStore from '@/store/useAuthStore';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Button from '../Button';
-import { HiOutlineUserCircle } from 'react-icons/hi'
+import { HiOutlineUserCircle } from 'react-icons/hi';
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { clsxm } from '@/lib/clsxm';
-import { Tooltip } from 'react-tooltip'
+import { Tooltip } from 'react-tooltip';
+import ModalTopUp from '../ModalTopUp';
 
 export const links = [
   { href: '/', label: 'Store' },
   { href: '/library', label: 'Library' },
   { href: '/user', label: 'User' },
-  { href: '/game', label: 'Game'}
-]
+  { href: '/game', label: 'Game' },
+];
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuthStore();
   const { theme, setTheme, systemTheme } = useTheme();
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const [mounted, setMounted] = React.useState<boolean>(false);
   React.useEffect(() => setMounted(true), []);
@@ -49,9 +51,21 @@ export default function Navbar() {
       );
     }
   };
+
+  const handleClose = () => {
+    setOpen(!open);
+  };
   return (
     <>
       <header className='shadow-lg mx-auto'>
+        <ModalTopUp
+          isOpen={open}
+          handleClose={() => {
+            handleClose();
+          }}
+          title='Top Up Steam'
+          description='Top Up Steam Wallet'
+        />
         <div className='flex justify-between py-3 px-20 items-center'>
           <Link href={'/'}>
             <Image
@@ -78,40 +92,48 @@ export default function Navbar() {
               ))}
             </ul>
           </nav>
-          <div className='flex my-auto'>
+          <div className='flex justify-center items-center gap-x-4 my-auto'>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+              }}
+              className='rounded-md cursor-pointer bg-slate-700 hover:bg-slate-600 py-2 px-5 text-white duration-200'
+            >
+              Top Up
+            </Button>
             {renderThemeChanger()}
-            {
-              isAuthenticated ? (
-                <div className={clsxm(
-                  'relative group flex px-5',
-                )}>
-                    {/* <Image
+            {isAuthenticated ? (
+              <div className={clsxm('relative group flex px-5')}>
+                {/* <Image
                       src={user!.pp}
                       alt='Profile Picture'
                       width={30}
                       height={30}
                     /> */}
-                    <HiOutlineUserCircle className='text-2xl cursor-pointer' id='clickable'/>
-                    <Tooltip anchorSelect='#clickable' clickable>
-                      <Link href='/user'>
-                        {user?.name}
-                      </Link>
-                      <hr />
-                      <Link href={`/profile/${user?.id}`}>
-                        Profile
-                      </Link>
-                      <hr />
-                      <Link href={'/'} onClick={() => {logout()}}>
-                        Logout
-                      </Link>
-                    </Tooltip>
-                </div>
-              ) : (
-                <Link href='/login' className='pl-6'>
-                  Login
-                </Link>
-              )
-            }
+                <HiOutlineUserCircle
+                  className='text-2xl cursor-pointer'
+                  id='clickable'
+                />
+                <Tooltip anchorSelect='#clickable' clickable>
+                  <Link href='/user'>{user?.name}</Link>
+                  <hr />
+                  <Link href={`/profile/${user?.id}`}>Profile</Link>
+                  <hr />
+                  <Link
+                    href={'/'}
+                    onClick={() => {
+                      logout();
+                    }}
+                  >
+                    Logout
+                  </Link>
+                </Tooltip>
+              </div>
+            ) : (
+              <Link href='/login' className=''>
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </header>
