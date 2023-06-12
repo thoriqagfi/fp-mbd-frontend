@@ -13,6 +13,11 @@ export type GameDataResponse = {
   success: boolean;
 };
 
+export type TagsResponse = {
+  id: number;
+  nama: string;
+}
+
 export type GameData = {
   id: string;
   nama: string;
@@ -25,4 +30,5 @@ export type GameData = {
   picture: string;
   video: string;
   developer: string;
+  tags: TagsResponse[];
 };

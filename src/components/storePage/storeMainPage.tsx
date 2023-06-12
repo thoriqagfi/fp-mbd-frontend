@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { apiMock } from '@/lib/apiMock';
 
 import useAuthStore from '@/store/useAuthStore';
@@ -17,38 +17,72 @@ import { rupiah } from '@/lib/rupiah';
 import Loading from '../Loading';
 import { ClassNames } from '@emotion/react';
 import withAuth from '../hoc/withAuth';
+import { GameData } from '@/types/game';
 
 export type SearchData = {
   keyword: string;
 };
 
 export type FeaturedApiResponse = {
-  data: Featured[];
+  data: FeaturedGames[];
   code: number;
   message: string;
   success: boolean;
 };
 
-export type Featured = {
+export type FeaturedGames = {
   game_id: string;
   game_title: string;
   game_description: string;
   game_price: number;
   game_picture: string;
 };
-export default withAuth(StoreMainPage, "auth");
+
+const fetchData = async (endpoint: string) => {
+  const { data } = await apiMock.get(endpoint);
+  return data;
+}
+export default withAuth(StoreMainPage, 'auth');
 
 function StoreMainPage() {
-  const {user } = useAuthStore();
+  const { user } = useAuthStore();
   const router = useRouter();
-  const { isLoading, error, data } = useQuery<FeaturedApiResponse>(
-    ['data'],
-    async () => {
-      const { data } = await apiMock.get(`/storeMainPage/featured`);
-      //console.log(data.data.game_picture);
-      return data;
-    }
-  );
+  // const {
+  //   isLoading: isLoadingFeatured,
+  //   error: errorFeatured,
+  //   data: dataFeatured,
+  // } = useQuery<FeaturedApiResponse>(['data'], async () => {
+  //   const { data } = await apiMock.get(`/storeMainPage/featured`);
+  //   //console.log(data.data.game_picture);
+  //   return data;
+  // });
+
+  const queryResults = useQueries({
+    queries: [
+      {
+        queryKey: ['featured'],
+        queryFn: () => fetchData(`/storeMainPage/featured`),
+      },
+      {
+        queryKey: ['popular'],
+        queryFn: () => fetchData(`/storeMainPage/popular`),
+      }
+    ]
+  });
+
+  console.log(queryResults)
+  const {isLoading: isLoadingFeatured, data:dataFeatured} = queryResults[0];
+  const {isLoading: isLoadingPopular, data:dataPopular} = queryResults[1];
+
+  // const {
+  //   isLoading: isLoadingPopular,
+  //   error: errorPopular,
+  //   data: dataPopular,
+  // } = useQuery<FeaturedApiResponse>(['data'], async () => {
+  //   const { data } = await apiMock.get(`/storeMainPage/popular`);
+  //   //console.log(data.data.game_picture);
+  //   return data;
+  // });
 
   const methods = useForm<SearchData>({
     mode: 'onChange',
@@ -72,7 +106,7 @@ function StoreMainPage() {
     }
   }, [formState, reset]);
 
-  if(isLoading) return <Loading/>
+  if (isLoadingFeatured && isLoadingPopular) return <Loading />;
   return (
     <>
       <Head>
@@ -147,55 +181,53 @@ function StoreMainPage() {
                   { minWidth: 'xl', slideSize: '70%', slideGap: 'xl' },
                   { minWidth: 'md', slideSize: '80%', slideGap: 'xl' },
                   { minWidth: 'sm', slideSize: '100%', slideGap: 'xl' },
-                ]
-              }
+                ]}
                 nextControlIcon={<PlayerTrackNext size={20} color='white' />}
                 previousControlIcon={
                   <PlayerTrackPrev size={20} color='white' />
                 }
               >
-                {data?.data && data?.data.map((item) => (
-                  <Carousel.Slide
-                    key={item.game_id}
-                    onClick={
-                      (e) => {
-                        e.stopPropagation();
-                      }
-                    }
-                    className='w-fit'
-                  >
-                    <Link
-                      href={`/game/${item.game_id}`}
-                      className='flex flex-col md:flex-row items-center shadow h-full mx-auto'
+                {dataFeatured?.data &&
+                  dataFeatured?.data.map((item: FeaturedGames) => (
+                    <Carousel.Slide
+                      key={item.game_id}
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
+                      className='w-fit'
                     >
-                      <div className='flex items-center basis-2/3 bg-black h-full'>
-                        <Image
-                          height={500}
-                          width={500}
-                          src={item.game_picture}
-                          alt='image2'
-                          className='w-full h-auto'
-                        />
-                      </div>
-                      <div className='flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700'>
-                        <div className='m-auto'>
-                          <h5 className='mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                            {item.game_title}
-                          </h5>
-                          <p className='mb-5 font-normal text-gray-700 dark:text-gray-400 hidden md:block'>
-                            {item.game_description}
-                          </p>
-                          <p className='font-semibold text-slate-50 dark:text-slate-50'>
-                            {rupiah(item.game_price)}
-                          </p>
+                      <Link
+                        href={`/game/${item.game_id}`}
+                        className='flex flex-col md:flex-row items-center shadow h-full mx-auto'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <div className='flex items-center basis-2/3 bg-black h-full'>
+                          <Image
+                            height={500}
+                            width={500}
+                            src={item.game_picture}
+                            alt='image2'
+                            className='w-full h-auto'
+                          />
                         </div>
-                      </div>
-                    </Link>
-                  </Carousel.Slide>
-                ))}
+                        <div className='flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700'>
+                          <div className='m-auto'>
+                            <h5 className='mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+                              {item.game_title}
+                            </h5>
+                            <p className='mb-5 font-normal text-gray-700 dark:text-gray-400 hidden md:block'>
+                              {item.game_description}
+                            </p>
+                            <p className='font-semibold text-slate-50 dark:text-slate-50'>
+                              {rupiah(item.game_price)}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    </Carousel.Slide>
+                  ))}
               </Carousel>
             </div>
           </section>
@@ -541,57 +573,35 @@ function StoreMainPage() {
           <div className='px-[15%] py-5'>
             <p>POPULAR</p>
           </div>
-          <div className='w-2/3 mx-auto'>
-            <a
-              href='#'
-              className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
-            >
-              <Image
-                height={500}
-                width={500}
-                className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
-                src='https://drive.google.com/uc?export=view&id=1_jTTRDcgx3qJa6hI-PSbR-EDGJ_Rup8N'
-                alt=''
-              />
-              <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
-                <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                  STRAY
-                </h5>
-                <p className='font-normal text-gray-700 dark:text-gray-400'>
-                  Adventure, Strategy, Open World
-                </p>
-              </div>
-              <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
-                <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
-                  Rp80000
-                </p>
-              </div>
-            </a>
-            <Link
-              href={`/game/34`}
-              className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
-            >
-              <Image
-                height={500}
-                width={500}
-                className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
-                src='https://drive.google.com/uc?export=view&id=178HEwH3W3bXD52D7hL1Q2-7GyBAr6W7q'
-                alt=''
-              />
-              <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
-                <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                  Monster Hunter
-                </h5>
-                <p className='font-normal text-gray-700 dark:text-gray-400'>
-                  Action, Multiplayer, Open World
-                </p>
-              </div>
-              <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
-                <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
-                  Rp300000
-                </p>
-              </div>
-            </Link>
+          <div className='w-2/3 mx-auto pb-5'>
+            {dataPopular?.data &&
+              dataPopular?.data.map((item: GameData) => (
+                <Link
+                  href={`/game/${item.id}`}
+                  className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
+                >
+                  <Image
+                    height={500}
+                    width={500}
+                    className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
+                    src={item.picture}
+                    alt=''
+                  />
+                  <div className='flex flex-col justify-between p-4 leading-normal pl-5 w-1/3 sm:w-full'>
+                    <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+                      {item.nama}
+                    </h5>
+                    <p className='font-normal text-gray-700 dark:text-gray-400 line-clamp-1'>
+                      {item.deskripsi}
+                    </p>
+                  </div>
+                  <div className='flex flex-col p-4 leading-normal pl-5 w-full items-end'>
+                    <p className='font-semibold text-gray-700 dark:text-white p-0 md:pr-8'>
+                      {rupiah(item.harga)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
           </div>
         </main>
       </Layout>
