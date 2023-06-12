@@ -1,14 +1,7 @@
-import * as React from 'react';
 import axios, { AxiosError } from 'axios';
-import { getToken } from './token';
-// import { GetServerSidePropsContext } from 'next';
-import Cookies from 'universal-cookie';
-
-// const isServer = typeof window === 'undefined';
-// let getServerSideProps = <GetServerSidePropsContext>{};
 
 export const apiMock = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.API_URL,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

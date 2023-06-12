@@ -1,22 +1,15 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import Layout from '@/components/layout/Layout'
+import StoreMainPage from '@/components/storePage/storeMainPage'
+import SearchResultPage from '@/pages/searchResultPage'
+import useAuthStore from '@/store/useAuthStore'
+import withAuth from '@/components/hoc/withAuth'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+export default withAuth(Home, 'auth')
+function Home() {
+  const { user, isLoading, isAuthenticated} = useAuthStore()
   return (
-    <Layout
-      title='Home'
-    >
-      <div className=' justify-between'>
-        <div>
-          This is header
-        </div>
-        <div>
-          this is contents
-        </div>
-      </div>
-    </Layout>
+    <>
+      <StoreMainPage/>
+      {/*<SearchResultPage/>*/}
+    </>
   )
 }

@@ -15,9 +15,37 @@
 :root {
   --background: white;
   --foreground: black;
+
+  --primary: #020617;
+  --secondary: #475569;
+  --secondaryHover: #64748b;
 }
 
 [data-theme='dark'] {
   --background: black;
   --foreground: white;
+
+  --secondaryHover: #1e293b;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 0px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--secondaryHover);
+}
+
+.tooltip:hover .tooltip-item {
+  visibility: visible;
 }
