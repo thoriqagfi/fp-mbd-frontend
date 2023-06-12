@@ -8,7 +8,7 @@ function Home() {
   const { user, isLoading, isAuthenticated} = useAuthStore()
   return (
     <>
-      <StoreMainPage/>
+      {<StoreMainPage/>}
       {/*<SearchResultPage/>*/}
     </>
   )

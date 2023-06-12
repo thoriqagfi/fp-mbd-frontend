@@ -208,19 +208,10 @@ export default function GameDetail() {
                   <h5 className='ml-2 mt-4 font-medium text-lg w-2/3'>
                     Play {data?.data.nama}
                   </h5>
-
-                  <button
-                    // onClick={}
-                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
-                    Buy {rupiah(data?.data.harga)}
-                  </button>
-                </div>
-
-                <div className='container col-12 my-2 py-3'>
-                  <div className='w-full'>{data?.data.deskripsi}</div>
                   <Link href={`/transaksiGame/${data?.data.id}`}>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
-                    {rupiah(data?.data.harga)}
+                    <button
+                      className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
+                      Buy {rupiah(data?.data.harga)}
                     </button>
                   </Link>
                 </div>

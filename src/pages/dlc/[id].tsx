@@ -48,6 +48,7 @@ export type DLCData = {
 
 export default function DLCDetail() {
   const { id } = useRouter().query;
+  
   const [openTab, setOpenTab] = React.useState(1);
   const { isLoading, error, data } = useQuery(
     ['dlc_detail'],

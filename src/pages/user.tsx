@@ -2,19 +2,29 @@ import Head from 'next/head';
 import * as React from 'react';
 import Image from 'next/image';
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import { FormProvider, FormProviderProps, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { apiMock } from '@/lib/apiMock';
 import { getToken } from '@/lib/token';
+import { rupiah } from '@/lib/rupiah';
 
 import { Carousel } from '@mantine/carousel';
 import Layout from '@/Layout/Layout';
 import { Search, PlaylistAdd, DeviceGamepad2, Plus } from 'tabler-icons-react';
 import withAuth from '@/components/hoc/withAuth';
+import Button from '@/components/Button';
 import useAuthStore from '@/store/useAuthStore';
 import Link from 'next/link';
+
+
 
 export type DevReleaseDataResponse = {
   data: ListGameDLC;
@@ -52,6 +62,11 @@ export type ListDLC = {
   picture: string;
 };
 
+export type ExportData ={
+  id: number;
+  game_id: number;
+};
+
 export default withAuth(User, 'USER');
 
 function User() {
@@ -60,7 +75,7 @@ function User() {
   const { isLoading, error, data } = useQuery<DevReleaseDataResponse>(
     ['data'],
     async () => {
-      const { data } = await apiMock.get(`/secured/user/medev`, {
+      const { data } = await apiMock.get(`secured/user/medev`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -99,6 +114,9 @@ function User() {
                     </p>
                     <p className='mt-2 font-normal text-xl mx-auto lg:mx-0'>
                       {user?.email}
+                    </p>
+                    <p className='mt-2 font-normal text-xl mx-auto lg:mx-0'>
+                      Steam Wallet: {rupiah(user?.wallet)}
                     </p>
                   </div>
                 </div>
@@ -139,19 +157,24 @@ function User() {
                   <p className='font-normal text-xl ml-2 my-5'>
                     Released Games
                   </p>
+
                   {data?.data.ListGames === undefined ||
                   data?.data.ListGames === null ? (
                     <p>This developer hasn't released any game's</p>
                   ) : (
                     data?.data.ListGames.map((item) => (
                       <div className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full dark:border-gray-700 dark:bg-gray-800 mb-3'>
-                        <Image
-                          height={500}
-                          width={500}
-                          className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
-                          src={item.picture}
-                          alt=''
-                        />
+                         <Link
+                          href={`/game/${item.id}`}
+                        >
+                          <Image
+                            height={500}
+                            width={500}
+                            className='object-cover h-full w-auto rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg'
+                            src={item.picture}
+                            alt=''
+                          />
+                        </Link>
                         <div className='flex flex-col justify-between p-0 sm:p-4 leading-normal pl-2 sm:pl-5 w-full'>
                           <h5 className='mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white'>
                             {item.nama}
@@ -173,7 +196,44 @@ function User() {
                                 />
                               </button>
                             </a>
-                            <p className='font-light text-md ml-2'>Add DLC</p>
+                            <p className='font-light text-md mx-3'>Add DLC</p>
+
+                            <a
+                              onClick={() =>
+                                router.push({
+                                  pathname: '/addBahasa',
+                                  query: { id: `${item.id}` },
+                                })
+                              }
+                            >
+                              <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'>
+                                <Plus
+                                  size={12}
+                                  strokeWidth={2}
+                                  color={'#ffff'}
+                                />
+                              </button>
+                            </a>
+                            <p className='font-light text-md mx-3'>Add Bahasa</p>
+
+                            <a
+                              onClick={() =>
+                                router.push({
+                                  pathname: '/addOS',
+                                  query: { id: `${item.id}` },
+                                })
+                              }
+                            >
+                              <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded float-right'>
+                                <Plus
+                                  size={12}
+                                  strokeWidth={2}
+                                  color={'#ffff'}
+                                />
+                              </button>
+                            </a>
+                            <p className='font-light text-md mx-3'>Add OS</p>
+                            
                           </div>
                         </div>
                       </div>
