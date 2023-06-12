@@ -118,7 +118,7 @@ export default function Login() {
                 />
                 <Button
                   type='submit'
-                  className='rounded-md cursor-pointer bg-slate-700 hover:bg-slate-600 py-2 px-5 text-white duration-200 mt-5'
+                  className='rounded-md cursor-pointer bg-slate-700 hover:bg-slate-600 py-2 px-5 text-white duration-200 mt-5 w-full'
                 >
                   Login
                 </Button>

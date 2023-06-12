@@ -24,7 +24,7 @@ export default function Library(){
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-            <main className="bg-blue-200 dark:bg-slate-800 p-12 flex flex-wrap justify-center gap-4 min-h-[calc(100vh-90px)]">
+            <main className="bg-white dark:bg-slate-800 p-12 flex flex-wrap justify-center gap-4 min-h-[calc(100vh-90px)]">
                 {(user?.list_game === undefined || user?.list_game ===null)?
                 <div className="w-full min-h-full grid justify-center">
                     <p className="my-auto">Your library is currently empty</p>
@@ -42,7 +42,7 @@ export default function Library(){
                             </div>
                         </div>
                     </div>
-                ))} 
+                ))}
             </main>
             </Layout>
         </>

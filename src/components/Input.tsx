@@ -28,7 +28,7 @@ export default function Input({
         <input
           {...rest}
           {...register(id, registerType)}
-          type={id == 'password' ? (show ? "text" : "password") : inputType}
+          type={id == 'password' ? (show ? "text" : "password") : id === 'nominal' ? 'number' : inputType }
           placeholder={placeholder}
           className="w-full focus:placeholder:opacity-0 focus:outline-none bg-transparent text-gray-900 hover:text-gray-950"
         />

@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider enableSystem={true} attribute='class'>
       <QueryClientProvider client={queryClient}>
         <Toast />
-        <Component {...pageProps} />
+        <Component {...pageProps} className="transition duration-500 ease-in-out"/>
       </QueryClientProvider>
     </ThemeProvider>
   )

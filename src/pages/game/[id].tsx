@@ -29,6 +29,11 @@ export type GameDataResponse = {
   success: boolean;
 };
 
+export type TagsResponse = {
+  id: number;
+  nama: string;
+};
+
 export interface GameListDLC {
   id: number;
   nama: string;
@@ -63,7 +68,8 @@ export default function GameDetail() {
     const res = await apiMock.get(`/storeMainPage/game/${id}`);
     return res.data;
   });
-  const listDLC: GameListDLC[] = data?.data.list_dlc
+  const listDLC: GameListDLC[] = data?.data.list_dlc;
+  const tags: TagsResponse[] = data?.data.tags;
 
   const methods = useForm<SearchData>({
     mode: 'onChange',
@@ -137,7 +143,6 @@ export default function GameDetail() {
                 >
                   <Search size={20} color='white' />
                 </button>
-
               </div>
               {/* </form> */}
             </FormProvider>
@@ -182,21 +187,13 @@ export default function GameDetail() {
                     <b>Tags:</b>
                   </p>
                   <div className='flex flex-wrap'>
-                    <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      [G_TAGS]
-                    </span>
-                    <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      [G_TAGS]
-                    </span>
-                    <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      [G_TAGS]
-                    </span>
-                    <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      [G_TAGS]
-                    </span>
-                    <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      [G_TAGS]
-                    </span>
+                    {tags?.map((tag) => {
+                      return (
+                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                        {tag.nama}
+                      </span>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
@@ -211,7 +208,8 @@ export default function GameDetail() {
 
                   <button
                     // onClick={}
-                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
+                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'
+                  >
                     Buy {rupiah(data?.data.harga)}
                   </button>
                 </div>
@@ -220,17 +218,22 @@ export default function GameDetail() {
                   <div className='w-full'>{data?.data.deskripsi}</div>
                   <Link href={`/transaksiGame/${data?.data.id}`}>
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
-                    {rupiah(data?.data.harga)}
+                      {rupiah(data?.data.harga)}
                     </button>
                   </Link>
                 </div>
 
                 <div>
-                  {listDLC && ( <h1 className='text-xl font-bold py-5'>List DLC</h1> )}
-                  {
-                    listDLC ? listDLC?.map((data) => {
+                  {listDLC && (
+                    <h1 className='text-xl font-bold py-5'>List DLC</h1>
+                  )}
+                  {listDLC ? (
+                    listDLC?.map((data) => {
                       return (
-                        <Link href={`/dlc/${data.id}`} className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'>
+                        <Link
+                          href={`/dlc/${data.id}`}
+                          className='flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 mb-3'
+                        >
                           <Image
                             height={500}
                             width={500}
@@ -252,11 +255,11 @@ export default function GameDetail() {
                             </p>
                           </div>
                         </Link>
-                      )
-                    }) : (
-                      <p>There is no DLC's exists</p>
-                    )
-                  }
+                      );
+                    })
+                  ) : (
+                    <p>There is no DLC's exists</p>
+                  )}
                 </div>
 
                 <div className='container col-12 my-2 py-3'>
@@ -313,9 +316,7 @@ export default function GameDetail() {
                                 className={openTab === 1 ? 'block' : 'hidden'}
                                 id='link1'
                               >
-                                <p>
-                                  {data?.data.system_min}
-                                </p>
+                                <p>{data?.data.system_min}</p>
                               </div>
                               <div
                                 className={openTab === 2 ? 'block' : 'hidden'}

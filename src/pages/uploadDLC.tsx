@@ -30,12 +30,12 @@ export type UploadData = {
 export default function UploadGame() {
     const id = parseInt(useRouter().query.id as string, 10);
     const {mutate, isSuccess, isError} = useMutationToast(useMutation(async ( upload_data: UploadData) => {
-        upload_data.game_id = id;
+      upload_data.game_id = id;
       console.log(upload_data);
-      /*await apiMock.post(`/secured/user/upload`,  upload_data, {
+      await apiMock.post(`/secured/user/updlc`,  upload_data, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
-      }})*/
+      }})
   }));
 
 
