@@ -10,6 +10,7 @@ import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { clsxm } from '@/lib/clsxm';
 import { Tooltip } from 'react-tooltip';
 import ModalTopUp from '../ModalTopUp';
+import Loading from '../Loading';
 
 export const links = [
   { href: '/', label: 'Store' },
@@ -19,7 +20,7 @@ export const links = [
 ];
 
 export default function Navbar() {
-  const { user, logout, isAuthenticated } = useAuthStore();
+  const { user, logout, isLoading, isAuthenticated } = useAuthStore();
   const { theme, setTheme, systemTheme } = useTheme();
   const [open, setOpen] = React.useState<boolean>(false);
 
@@ -55,6 +56,8 @@ export default function Navbar() {
   const handleClose = () => {
     setOpen(!open);
   };
+
+  if (isLoading && !isAuthenticated) return <Loading />;
   return (
     <>
       <header className='shadow-lg mx-auto'>
@@ -93,14 +96,18 @@ export default function Navbar() {
             </ul>
           </nav>
           <div className='flex justify-center items-center gap-x-4 my-auto'>
-            <Button
-              onClick={() => {
-                setOpen(!open);
-              }}
-              className='rounded-md cursor-pointer bg-slate-700 hover:bg-slate-600 py-2 px-5 text-white duration-200'
-            >
-              Top Up
-            </Button>
+            {user ? (
+              <Button
+                onClick={() => {
+                  setOpen(!open);
+                }}
+                className='rounded-md cursor-pointer bg-slate-700 hover:bg-slate-600 py-2 px-5 text-white duration-200'
+              >
+                Top Up
+              </Button>
+            ) : (
+              ''
+            )}
             {renderThemeChanger()}
             {isAuthenticated ? (
               <div className={clsxm('relative group flex px-5')}>

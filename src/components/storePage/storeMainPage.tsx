@@ -165,7 +165,7 @@ function StoreMainPage() {
               </div>
             </div>
             <div className='px-[15%] py-5'>
-              <p>FEATURED & RECOMMENDED</p>
+              <p className='font-bold text-2xl'>FEATURED & RECOMMENDED</p>
             </div>
             <div style={{ display: 'flex' }} className='w-full h-96 mb-10'>
               <Carousel
@@ -194,25 +194,25 @@ function StoreMainPage() {
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
-                      className='w-fit'
+                      className='w-fit shadow'
                     >
                       <Link
                         href={`/game/${item.game_id}`}
-                        className='flex flex-col md:flex-row items-center shadow h-full mx-auto'
+                        className='flex flex-col md:flex-row items-center shadow-lg h-full mx-auto'
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
                       >
-                        <div className='flex items-center basis-2/3 bg-black h-full'>
+                        <div className='flex items-center basis-2/3 bg-sky-100 dark:bg-black h-full'>
                           <Image
                             height={500}
                             width={500}
                             src={item.game_picture}
                             alt='image2'
-                            className='w-full h-auto'
+                            className='w-full h-auto shadow'
                           />
                         </div>
-                        <div className='flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-slate-700'>
+                        <div className='flex p-4 leading-normal basis-1/3 px-10 h-full w-full bg-white dark:bg-slate-700'>
                           <div className='m-auto'>
                             <h5 className='mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
                               {item.game_title}
@@ -232,7 +232,7 @@ function StoreMainPage() {
             </div>
           </section>
           <div className='px-[15%] py-5'>
-            <p>BROWSE BY CATEGORY</p>
+            <p className='font-bold text-2xl'>BROWSE BY CATEGORY</p>
           </div>
           <div className='w-full h-64 mb-10'>
             <Carousel
@@ -571,7 +571,7 @@ function StoreMainPage() {
             </Carousel>
           </div>
           <div className='px-[15%] py-5'>
-            <p>POPULAR</p>
+            <p className='font-bold text-2xl'>POPULAR</p>
           </div>
           <div className='w-2/3 mx-auto pb-5'>
             {dataPopular?.data &&

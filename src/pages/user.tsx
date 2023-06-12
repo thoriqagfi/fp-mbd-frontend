@@ -95,7 +95,7 @@ function User() {
       </Head>
       <Layout>
         {user?.role === 'Developer' ? (
-          <main className='bg-blue-200 dark:bg-slate-800 py-12 min-h-screen'>
+          <main className='bg-white dark:bg-slate-800 text-white py-12 min-h-screen'>
             <div className='px-[20%] md:px-[15%]'>
               <div className='w-full py-10 px-16 flex flex-col lg:flex-row bg-slate-900'>
                 <div className='w-full lg:w-2/3 flex flex-col lg:flex-row'>
@@ -233,7 +233,7 @@ function User() {
                               </button>
                             </a>
                             <p className='font-light text-md mx-3'>Add OS</p>
-                            
+
                           </div>
                         </div>
                       </div>
@@ -271,7 +271,7 @@ function User() {
             </div>
           </main>
         ) : user?.role === 'User' ? (
-          <main className='bg-blue-200 dark:bg-slate-800 py-12'>
+          <main className='bg-white dark:bg-slate-800 text-white py-12'>
             <div className='px-[20%] md:px-[15%]'>
               <div className='w-full py-10 px-16 flex flex-col lg:flex-row bg-slate-900'>
                 <div className='w-full lg:w-2/3 flex flex-col lg:flex-row'>
