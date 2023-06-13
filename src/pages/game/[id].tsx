@@ -70,6 +70,10 @@ export default function GameDetail() {
   });
   const listDLC: GameListDLC[] = data?.data.list_dlc;
   const tags: TagsResponse[] = data?.data.tags;
+  const audioLanguage: TagsResponse[] = data?.data.audio_language;
+  const interfaceLanguage: TagsResponse[] = data?.data.interface_language;
+  const subtitleLanguage: TagsResponse[] = data?.data.subtitle_language;
+  const os: TagsResponse[] = data?.data.operating_systems;
 
   const methods = useForm<SearchData>({
     mode: 'onChange',
@@ -103,51 +107,6 @@ export default function GameDetail() {
       </Head>
       <Layout>
         <main className='bg-blue-200 dark:bg-slate-800'>
-          <div className='px-[15%] pt-5'>
-            <FormProvider {...methods}>
-              {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-              <label
-                htmlFor='default-search'
-                className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'
-              >
-                Search
-              </label>
-              <div className='relative'>
-                <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-                  <svg
-                    aria-hidden='true'
-                    className='w-5 h-5 text-gray-500 dark:text-gray-400'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  type='search'
-                  id='default-search'
-                  className='block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Search Games, Tags...'
-                  required
-                />
-                <button
-                  type='submit'
-                  className='text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                >
-                  <Search size={20} color='white' />
-                </button>
-              </div>
-              {/* </form> */}
-            </FormProvider>
-          </div>
-
           <div className='container w-10/12 flex flex-col px-0 mt-1 mx-auto'>
             <p className='ml-2 mt-10 mb-5 font-medium text-2xl'>
               {data?.data.nama}
@@ -205,21 +164,13 @@ export default function GameDetail() {
                   <h5 className='ml-2 mt-4 font-medium text-lg w-2/3'>
                     Play {data?.data.nama}
                   </h5>
-
+                  <Link href={`/transaksiGame/${data?.data.id}`}>
                   <button
                     // onClick={}
                     className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'
                   >
                     Buy {rupiah(data?.data.harga)}
                   </button>
-                </div>
-
-                <div className='container col-12 my-2 py-3'>
-                  <div className='w-full'>{data?.data.deskripsi}</div>
-                  <Link href={`/transaksiGame/${data?.data.id}`}>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
-                      {rupiah(data?.data.harga)}
-                    </button>
                   </Link>
                 </div>
 
@@ -258,7 +209,7 @@ export default function GameDetail() {
                       );
                     })
                   ) : (
-                    <p>There is no DLC's exists</p>
+                    <p></p>
                   )}
                 </div>
 
@@ -341,42 +292,33 @@ export default function GameDetail() {
                     </h5>
                     <p className='mx-1 mt-3 text-light '>Interface:</p>
                     <div className='flex flex-wrap'>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BI_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BI_NAME]
-                      </span>
+                      {interfaceLanguage === undefined || interfaceLanguage === null ? <p className='mt-3 ml-1 mb-0 text-slate-100 font-light text-md text-opacity-75'>Currently empty</p> : interfaceLanguage?.map((il) => {
+                        return (
+                        <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                          {il.nama}
+                        </span>
+                        )
+                      })}
                     </div>
                     <p className='mx-1 mt-3 text-light'>Audio:</p>
                     <div className='flex flex-wrap'>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BA_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BA_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BA_NAME]
-                      </span>
+                    {audioLanguage === undefined || audioLanguage === null ? <p className='mt-3 ml-1 mb-0 text-slate-100 font-light text-md text-opacity-75'>Currently empty</p> : audioLanguage?.map((al) => {
+                        return (
+                        <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                          {al.nama}
+                        </span>
+                        )
+                      })}
                     </div>
                     <p className='mx-1 mt-3 text-light'>Subtitle:</p>
                     <div className='flex flex-wrap'>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BS_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BS_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BS_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BS_NAME]
-                      </span>
-                      <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                        [BS_NAME]
-                      </span>
+                    {subtitleLanguage === undefined || subtitleLanguage === null ? <p className='mt-3 ml-1 mb-0 text-slate-100 font-light text-md text-opacity-75'>Currently empty</p> : subtitleLanguage?.map((sl) => {
+                        return (
+                        <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                          {sl.nama}
+                        </span>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>

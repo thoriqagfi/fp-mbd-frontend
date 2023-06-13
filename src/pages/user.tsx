@@ -291,6 +291,9 @@ function User() {
                     <p className='mt-2 font-normal text-xl mx-auto lg:mx-0'>
                       {user?.email}
                     </p>
+                    <p className='mt-2 font-normal text-xl mx-auto lg:mx-0'>
+                      Steam Wallet: {rupiah(user?.wallet)}
+                    </p>
                   </div>
                 </div>
                 <div className='w-full lg:w-1/3 mt-5 lg:mt-0 grid content-center'>
