@@ -108,9 +108,9 @@ export default function SearchResultPage(){
                             </a>
                             )}
                         </div>
-                        <div className="w-1/5">
-                            <div className="w-full mx-2 flex flex-row lg:flex-col gap-4">
-                                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <div className="w-1/5 bg-slate-900">
+                            <div className="w-full flex flex-row lg:flex-col gap-4">
+                                <ul className="text-sm text-gray-700 dark:text-gray-200">
                                 {tagData.map((item)=>
                                     <li>           
                                         <a onClick={() =>

@@ -131,7 +131,7 @@ export default function DLCDetail() {
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right'>
                       {rupiah(data?.data.harga == undefined ? 0 : data?.data.harga)}
                     </button>
-                    </Link>
+                  </Link>
                 </div>
 
                 <div className='container col-12 my-2 py-3'>

@@ -9,7 +9,7 @@ import { apiMock } from '@/lib/apiMock';
 
 import { Carousel } from '@mantine/carousel';
 import Layout from '@/Layout/Layout';
-import { Search, PlayerTrackNext, PlayerTrackPrev } from 'tabler-icons-react';
+import { Plus  } from 'tabler-icons-react';
 import { rupiah } from '@/lib/rupiah';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -62,6 +62,7 @@ export type GameData = {
 // export default withAuth(GameDetail, 'auth');
 
 export default function GameDetail() {
+  const router = useRouter();
   const { id } = useRouter().query;
   const [openTab, setOpenTab] = React.useState(1);
   const { isLoading, error, data } = useQuery(['game_detail'], async () => {
@@ -153,12 +154,22 @@ export default function GameDetail() {
                       </span>
                       )
                     })}
+                      
+                        <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                          <a onClick={() =>
+                                    router.push({
+                                      pathname: '/addTag',
+                                      query: { id: `${data?.data.id}` },
+                         })}>
+                          <Plus size={14} strokeWidth={2} color={'#ffff'} className='mt-1'/>
+                          </a>
+                        </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className='container flex flex-col md:flex-row px-0 mt-3'>
+            <div className='container flex flex-col md:flex-row px-0 my-3'>
               <div className='container w-full md:w-2/3 flex flex-col m-0 p-0 h-100'>
                 <div className='w-full bg-slate-700 block rounded p-5'>
                   <h5 className='ml-2 mt-4 font-medium text-lg w-2/3'>
@@ -320,6 +331,24 @@ export default function GameDetail() {
                         )
                       })}
                     </div>
+                  </div>
+                </div>
+
+
+                <div className='w-full bg-slate-900 mt-5'>
+                  <div className='w-full flex flex-col p-6'>
+                    <h5 className='text-light text-lg mb-5'>
+                      OS Compatibility
+                    </h5>
+                    <div className='flex flex-wrap'>
+                      {os === undefined || os === null ? <p className='mt-3 ml-1 mb-0 text-slate-100 font-light text-md text-opacity-75'>Currently empty</p> : os?.map((itemOs) => {
+                        return (
+                        <span className='w-fit my-1 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                          {itemOs.nama}
+                        </span>
+                        )
+                      })}
+                    </div>            
                   </div>
                 </div>
               </div>

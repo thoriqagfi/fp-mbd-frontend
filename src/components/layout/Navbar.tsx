@@ -14,9 +14,9 @@ import Loading from '../Loading';
 
 export const links = [
   { href: '/', label: 'Store' },
+  { href: '/game', label: 'Archive' },
   { href: '/library', label: 'Library' },
   { href: '/user', label: 'User' },
-  { href: '/game', label: 'Game' },
 ];
 
 export default function Navbar() {
@@ -57,7 +57,7 @@ export default function Navbar() {
     setOpen(!open);
   };
 
-  if (isLoading && !isAuthenticated) return <Loading />;
+  //if (isLoading && !isAuthenticated) return <Loading />;
   return (
     <>
       <header className='shadow-lg mx-auto'>
